@@ -1,0 +1,1359 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Decentro Signup Demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Layout concept: two worlds, one account — the public website (Montserrat, blue gradient pills) hands off to the product dashboard (Inter, black CTAs, slate surfaces). Single light look, matching both live products. */
+:root{
+  color-scheme: light;
+  /* Website — decentro.tech */
+  --w-blue:#096EF2; --w-blue2:#0092FF; --w-teal:#32CBD1;
+  --w-ink:#000000; --w-grey:#5F6872; --w-line:#C4C4C4;
+  --w-tint:#EFF5FF; --w-soft:#FAFAFA; --w-bar:#F8F8F8;
+  --f-web:'Montserrat', 'Segoe UI', Helvetica, Arial, sans-serif;
+  /* Dashboard — live platform */
+  --d-bg:#FFFFFF; --d-surf:#F1F5F9; --d-bdr:#E2E8F0; --d-fg:#1C2024;
+  --d-muted:#64748B; --d-sub:#475569; --d-dark:#334155; --d-black:#000000;
+  --f-dash:'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --f-mono:'SF Mono', 'Fira Code', Menlo, Consolas, monospace;
+  /* Status */
+  --ok:#166534; --ok-bg:#F0FDF4; --ok-bd:#BBF7D0; --ok-dot:#16A34A;
+  --warn:#92400E; --warn-bg:#FFFBEB; --warn-bd:#FDE68A; --warn-dot:#F59E0B;
+  --err:#B91C1C; --err-bg:#FEF2F2; --err-bd:#FECACA;
+  --info:#1E3A8A; --info-bg:#EFF6FF; --info-bd:#BFDBFE; --info-dot:#3B82F6;
+  --r:10px; --r-sm:6px;
+}
+*,*::before,*::after{box-sizing:border-box}
+html,body{background:var(--d-bg);color:var(--d-fg)}
+body{font-family:var(--f-dash);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--w-blue);outline-offset:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+
+/* ═════════════ WEBSITE ═════════════ */
+.web{font-family:var(--f-web);color:var(--w-ink);background:#fff;min-height:100%}
+.w-wrap{max-width:1200px;margin:0 auto;padding-inline:24px}
+.w-nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:#fff;border-bottom:1px solid #EDEDED}
+.w-nav .w-wrap{display:flex;align-items:center;gap:28px;min-height:76px}
+.wm{display:inline-flex;flex-direction:column;line-height:1;text-decoration:none;color:var(--w-ink);background:none;border:0;padding:0}
+.wm b{font-size:22px;font-weight:700;letter-spacing:.06em}
+.wm b i{font-style:normal;color:var(--w-blue)}
+.wm small{font-size:7.5px;font-weight:600;letter-spacing:.32em;margin-top:4px}
+.w-links{display:flex;gap:26px;font-size:14px;font-weight:500;color:#333}
+.w-links button{background:none;border:0;padding:6px 0;font-weight:500}
+.w-links button:hover{color:var(--w-blue)}
+.w-right{margin-left:auto;display:flex;gap:10px;align-items:center}
+.w-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:34px;font-family:var(--f-web);font-weight:600;white-space:nowrap;text-decoration:none;transition:transform .15s, box-shadow .15s}
+.w-btn-o{border:1px solid var(--w-blue);color:var(--w-blue);background:#fff;padding:10px 22px;font-size:13px}
+.w-btn-o:hover{background:var(--w-tint)}
+.w-btn-t{border:0;background:none;color:#222;padding:10px 12px;font-size:13px}
+.w-btn-t:hover{color:var(--w-blue)}
+.w-btn-g{border:0;color:#fff;background:linear-gradient(90deg,var(--w-blue),var(--w-blue2));padding:15px 40px;font-size:16px;box-shadow:0 6px 18px rgba(9,110,242,.25)}
+.w-btn-g:hover{transform:translateY(-1px);box-shadow:0 10px 24px rgba(9,110,242,.3)}
+.w-btn-g.sm{padding:11px 24px;font-size:14px}
+.w-btn-w{border:0;background:#fff;color:var(--w-blue);padding:14px 36px;font-size:15px}
+.w-hero{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:48px;align-items:center;padding-block:72px 56px}
+.w-hero h1{font-size:50px;line-height:1.15;font-weight:500;margin:0;letter-spacing:-.5px;text-wrap:balance}
+.w-hero h1 .typed{color:var(--w-blue);font-weight:600;display:inline-block;min-width:4ch}
+.w-hero .lead{font-size:20px;color:var(--w-grey);margin:18px 0 30px}
+.w-stats{display:flex;flex-direction:column;gap:8px;margin-top:40px;font-size:17px;color:var(--w-grey)}
+.w-stats b{color:var(--w-blue);font-weight:600;font-size:20px}
+.w-heroart{background:var(--w-tint);border-radius:24px;padding:28px;display:flex;flex-direction:column;gap:14px}
+.w-heroart .lbl{font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--w-blue)}
+.w-step{background:#fff;border-radius:16px;padding:16px 18px;display:flex;gap:14px;align-items:flex-start;box-shadow:0 2px 10px rgba(9,110,242,.06)}
+.w-step .n{width:30px;height:30px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:#fff;background:linear-gradient(90deg,var(--w-blue),var(--w-blue2))}
+.w-step h4{margin:0;font-size:15px;font-weight:600}
+.w-step p{margin:3px 0 0;font-size:13px;color:var(--w-grey);line-height:1.55}
+.w-trust{padding-block:28px;font-size:22px;text-align:center}
+.w-trust b{font-weight:700}
+.w-sec{padding-block:72px}
+.w-sec.soft{background:var(--w-soft)}
+.w-sec.tint{background:var(--w-tint)}
+.w-sec h2{font-size:34px;font-weight:600;margin:0 0 10px;text-align:center;text-wrap:balance}
+.w-sec .sub{font-size:17px;color:var(--w-grey);text-align:center;margin:0 auto 40px;max-width:640px}
+.w-grid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+.w-feat{background:#fff;border-radius:16px;padding:24px;text-align:center;border:1px solid #EEF1F5}
+.w-feat b{display:block;font-size:26px;color:var(--w-blue);font-weight:700}
+.w-feat span{font-size:14px;font-weight:600}
+.w-grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.w-launch{background:#fff;border-radius:20px;padding:28px;display:flex;flex-direction:column;gap:10px}
+.w-launch .ico{width:48px;height:48px;border-radius:14px;background:var(--w-tint);display:flex;align-items:center;justify-content:center;color:var(--w-blue)}
+.w-launch h3{margin:6px 0 0;font-size:20px;font-weight:600}
+.w-launch p{margin:0;font-size:14px;color:var(--w-grey);line-height:1.65}
+.w-prod{border:1px solid #E7ECF3;border-radius:20px;padding:26px;display:flex;flex-direction:column;gap:10px;background:#fff;transition:box-shadow .15s, transform .15s}
+.w-prod:hover{box-shadow:0 12px 28px rgba(9,110,242,.1);transform:translateY(-2px)}
+.w-prod h3{margin:0;font-size:19px;font-weight:600}
+.w-prod p{margin:0;font-size:14px;color:var(--w-grey);line-height:1.6;flex-grow:1}
+.w-prod button{align-self:flex-start;background:none;border:0;padding:0;color:var(--w-blue);font-weight:600;font-size:14px}
+.w-cta{background:linear-gradient(82deg,#086EF2,var(--w-teal));border-radius:28px;color:#fff;padding:48px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:24px}
+.w-cta h2{color:#fff;text-align:left;margin:0;font-size:30px}
+.w-cta p{margin:6px 0 0;font-size:16px;opacity:.92}
+.w-foot{background:#000;color:#fff;padding-block:40px calc(88px + env(safe-area-inset-bottom,0px))}
+.w-foot .w-wrap{display:flex;flex-wrap:wrap;gap:20px;justify-content:space-between;align-items:center}
+.w-foot .wm{color:#fff}
+.w-foot nav{display:flex;gap:22px;font-size:13px;color:#C9CDD2}
+.w-foot nav button{background:none;border:0;color:inherit;padding:0}
+
+/* website auth pages */
+.w-auth{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);min-height:100vh}
+.w-auth-art{background:linear-gradient(160deg,var(--w-tint),#DCEBFF);padding:48px 56px;display:flex;flex-direction:column;gap:32px}
+.w-auth-art h2{font-size:32px;line-height:1.25;font-weight:600;margin:40px 0 0;text-wrap:balance}
+.w-auth-art h2 span{color:var(--w-blue)}
+.w-auth-art ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px}
+.w-auth-art li{display:flex;gap:14px;align-items:flex-start;background:#fff;border-radius:16px;padding:14px 16px}
+.w-auth-art li .n{width:28px;height:28px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;border:1.5px solid var(--w-blue);color:var(--w-blue)}
+.w-auth-art li.on .n{background:linear-gradient(90deg,var(--w-blue),var(--w-blue2));color:#fff;border:0}
+.w-auth-art li b{display:block;font-size:14px;font-weight:600}
+.w-auth-art li span{font-size:13px;color:var(--w-grey)}
+.w-auth-stats{margin-top:auto;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.w-auth-stats b{display:block;font-size:22px;color:var(--w-blue);font-weight:700}
+.w-auth-stats span{font-size:12px;color:var(--w-grey);font-weight:500}
+.w-auth-main{display:flex;flex-direction:column;align-items:center;padding:40px 24px calc(72px + env(safe-area-inset-bottom,0px))}
+.w-auth-form{width:100%;max-width:520px;display:flex;flex-direction:column;gap:18px;padding-bottom:32px}
+.w-auth-top{display:flex;justify-content:space-between;align-items:center;width:100%;max-width:520px;margin-bottom:28px}
+.w-auth-top .alt{font-size:13px;color:var(--w-grey);margin-left:auto;text-align:right}
+.w-mlogo{visibility:hidden}
+@media (max-width: 900px){ .w-mlogo{visibility:visible} }
+.w-auth-top .alt button{background:none;border:0;color:var(--w-blue);font-weight:600;padding:0}
+.w-h{margin:0;font-size:26px;font-weight:600;text-wrap:balance}
+.w-hsub{margin:-8px 0 4px;font-size:15px;color:var(--w-grey)}
+.w-row2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.w-field{display:flex;flex-direction:column;gap:8px;min-width:0}
+.w-field label,.w-field .lab{font-size:15px;font-weight:500;color:#000}
+.w-field label i,.w-field .lab i{color:#E11D48;font-style:normal}
+.w-input{height:46px;border:1px solid var(--w-line);border-radius:45px;padding:0 22px;font-size:15px;font-weight:500;color:#333;background:#fff;width:100%;min-width:0;transition:border-color .15s, box-shadow .15s}
+.w-input:focus{outline:none;border-color:var(--w-blue);box-shadow:0 0 0 3px rgba(9,110,242,.12)}
+.w-input.bad{border-color:#E11D48}
+.w-phone{display:flex;align-items:center;border:1px solid var(--w-line);border-radius:45px;background:#fff;overflow:hidden}
+.w-phone:focus-within{border-color:var(--w-blue);box-shadow:0 0 0 3px rgba(9,110,242,.12)}
+.w-phone.bad{border-color:#E11D48}
+.w-phone select{border:0;background:transparent;height:44px;padding:0 6px 0 18px;font-weight:600;font-size:14px}
+.w-phone input{border:0;height:44px;flex:1;min-width:0;padding:0 18px 0 6px;font-size:15px;font-weight:500;color:#333;outline:none}
+.w-pass{position:relative}
+.w-pass button{position:absolute;right:8px;top:7px;height:32px;padding:0 12px;border:0;background:none;color:var(--w-blue);font-weight:600;font-size:12px;font-family:var(--f-web)}
+.w-err{font-size:12px;color:#BE123C;font-weight:500;margin-top:-2px}
+.w-hint{font-size:12px;color:var(--w-grey)}
+.w-chips{display:flex;flex-wrap:wrap;gap:8px}
+.w-chip{display:inline-flex;align-items:center;gap:7px;height:38px;padding:0 16px;border-radius:34px;border:1px solid var(--w-line);background:#fff;font-family:var(--f-web);font-size:13px;font-weight:600;color:#333;transition:all .12s}
+.w-chip:hover{border-color:var(--w-blue)}
+.w-chip[aria-pressed="true"]{background:var(--w-blue);border-color:var(--w-blue);color:#fff}
+.w-check{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--w-grey);line-height:1.5}
+.w-check input{width:17px;height:17px;margin:1px 0 0;accent-color:var(--w-blue);flex-shrink:0}
+.w-check button{background:none;border:0;padding:0;color:var(--w-blue);font-weight:600}
+.w-submit{width:100%;padding:13px 20px;font-size:15px}
+.w-bar{width:100%;background:var(--w-bar);text-align:center;padding:16px;font-size:14px;color:var(--w-grey);margin-top:auto}
+.w-bar b{color:var(--w-blue);font-weight:600;user-select:all}
+.w-or{display:flex;align-items:center;gap:12px;font-size:12px;color:var(--w-grey)}
+.w-or::before,.w-or::after{content:"";flex:1;height:1px;background:#E5E7EB}
+.w-sso{height:46px;border:1px solid var(--w-line);border-radius:45px;background:#fff;font-family:var(--f-web);font-weight:600;font-size:14px;display:flex;align-items:center;justify-content:center;gap:10px}
+.w-sso:hover{border-color:var(--w-blue)}
+.w-note{background:var(--w-tint);border-radius:16px;padding:14px 16px;font-size:13px;color:#24476F;display:flex;gap:10px;align-items:flex-start;line-height:1.55}
+
+/* setup overlay */
+.setup{position:fixed;inset:0;z-index:200;background:rgba(255,255,255,.96);display:flex;align-items:center;justify-content:center;font-family:var(--f-web)}
+.setup-card{width:min(420px,calc(100% - 32px));display:flex;flex-direction:column;gap:18px}
+.setup-card h2{margin:0;font-size:22px;font-weight:600}
+.setup-row{display:flex;gap:12px;align-items:center;font-size:15px;color:var(--w-grey);transition:color .2s}
+.setup-row .s{width:24px;height:24px;border-radius:50%;border:2px solid #D7E3F5;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.setup-row.done{color:#000}
+.setup-row.done .s{background:var(--w-blue);border-color:var(--w-blue)}
+.setup-row.busy .s{border-color:var(--w-blue);border-top-color:transparent;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ═════════════ DASHBOARD ═════════════ */
+.dash{font-family:var(--f-dash);background:var(--d-surf);min-height:100vh;color:var(--d-fg)}
+.d-top{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:var(--d-bg);border-bottom:1px solid var(--d-bdr)}
+.d-top-row{min-height:60px;padding:8px 24px;display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px}
+.d-logo{display:flex;align-items:center;gap:9px;background:none;border:0;padding:0;color:#000}
+.logo{display:block;flex-shrink:0;max-width:100%}
+.wm{color:#000}
+.d-logo .mk{width:28px;height:28px;background:#000;border-radius:6px;display:flex;align-items:center;justify-content:center}
+.d-logo b{font-size:16px;font-weight:700;letter-spacing:-.3px}
+.env{display:inline-flex;background:var(--d-surf);border:1px solid var(--d-bdr);border-radius:var(--r);padding:3px;gap:2px}
+.env button{display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 12px;border-radius:7px;border:0;background:none;font-size:12px;font-weight:600;color:var(--d-sub)}
+.env button[aria-pressed="true"]{background:#fff;color:var(--d-fg);font-weight:700;box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.dot{width:7px;height:7px;border-radius:50%;display:inline-block;flex-shrink:0}
+.d-search{display:flex;align-items:center;gap:8px;height:36px;padding:0 12px;background:var(--d-surf);border:1px solid var(--d-bdr);border-radius:var(--r);font-size:13px;color:var(--d-muted);flex:0 1 240px;min-width:150px}
+.d-search kbd{margin-left:auto;font-size:10px;background:#fff;border:1px solid var(--d-bdr);border-radius:4px;padding:1px 5px;font-family:inherit}
+.d-tr{margin-left:auto;display:flex;align-items:center;gap:10px;position:relative}
+.d-tr .lnk{font-size:12px;font-weight:600;color:var(--d-sub);background:none;border:0;padding:6px}
+.icon-btn{width:36px;height:36px;border:1px solid var(--d-bdr);border-radius:var(--r);background:#fff;display:inline-flex;align-items:center;justify-content:center;color:var(--d-sub);position:relative}
+.icon-btn .pip{position:absolute;top:7px;right:8px;width:7px;height:7px;border-radius:50%;background:#EF4444;border:1.5px solid #fff}
+.av{width:34px;height:34px;border-radius:50%;background:#000;color:#fff;font-size:11px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;border:0;flex-shrink:0}
+.menu{position:absolute;top:44px;right:0;width:240px;background:#fff;border:1px solid var(--d-bdr);border-radius:var(--r);box-shadow:0 12px 32px rgba(0,0,0,.1);padding:6px;z-index:40}
+.menu .who{padding:10px;border-bottom:1px solid var(--d-surf);margin-bottom:4px}
+.menu .who b{display:block;font-size:13px}
+.menu .who span{font-size:12px;color:var(--d-muted);word-break:break-all}
+.menu button{width:100%;text-align:left;background:none;border:0;padding:9px 10px;border-radius:var(--r-sm);font-size:13px;font-weight:500}
+.menu button:hover{background:var(--d-surf)}
+.strip{display:flex;flex-wrap:wrap;align-items:center;gap:6px 16px;padding:9px 24px;font-size:13px;border-top:1px solid}
+.strip.sb{background:var(--warn-bg);border-color:var(--warn-bd);color:var(--warn)}
+.strip.lv{background:var(--ok-bg);border-color:var(--ok-bd);color:var(--ok)}
+.strip button{margin-left:auto;background:none;border:0;padding:0;font-weight:700;color:inherit;text-decoration:underline}
+.d-body{display:grid;grid-template-columns:240px minmax(0,1fr);align-items:start}
+.d-side{background:#fff;border-right:1px solid var(--d-bdr);padding:14px 10px 24px;display:flex;flex-direction:column;gap:14px;min-height:calc(100vh - 100px);position:sticky;top:100px}
+.d-grp{display:flex;flex-direction:column;gap:2px}
+.d-grp-l{font-size:11px;font-weight:600;color:var(--d-muted);text-transform:uppercase;letter-spacing:.07em;padding:0 12px 4px}
+.nv{display:flex;align-items:center;gap:9px;height:40px;padding:0 12px;border-radius:var(--r);border:0;border-left:3px solid transparent;background:none;font-weight:500;color:var(--d-sub);text-align:left;width:100%}
+.nv:hover{background:var(--d-surf);color:var(--d-fg)}
+.nv[aria-current="page"]{background:var(--d-surf);border-left-color:#000;color:var(--d-fg);font-weight:600;padding-left:9px}
+.nv svg{opacity:.6;flex-shrink:0}
+.nv[aria-current="page"] svg{opacity:1}
+.nv .bdg{margin-left:auto}
+.bdg{font-size:10px;font-weight:700;border-radius:100px;padding:2px 8px;white-space:nowrap}
+.b-blk{background:#000;color:#fff}
+.b-ok{background:var(--ok-bg);color:var(--ok);border:1px solid var(--ok-bd)}
+.b-warn{background:var(--warn-bg);color:var(--warn);border:1px solid var(--warn-bd)}
+.b-info{background:#DBEAFE;color:var(--info)}
+.b-grey{background:var(--d-surf);color:var(--d-sub);border:1px solid var(--d-bdr)}
+.b-err{background:var(--err-bg);color:var(--err);border:1px solid var(--err-bd)}
+.d-main{padding:24px 24px calc(128px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:20px;min-width:0}
+.ph{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px}
+.ph h1{margin:0 0 4px;font-size:24px;font-weight:700;letter-spacing:-.4px}
+.ph p{margin:0;font-size:13px;color:var(--d-sub)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;height:40px;padding:0 16px;border-radius:var(--r);font-size:12px;font-weight:600;white-space:nowrap;border:1px solid transparent;transition:background .12s}
+.btn.sm{height:34px;padding:0 12px}
+.btn.xs{height:30px;padding:0 10px;font-size:11px;border-radius:var(--r-sm)}
+.btn-p{background:#000;color:#fff;border-color:#000}
+.btn-p:hover{background:#1a1a1a}
+.btn-p:disabled{opacity:.4;cursor:not-allowed}
+.btn-o{background:#fff;border-color:var(--d-bdr);color:var(--d-fg)}
+.btn-o:hover{background:var(--d-surf)}
+.btn-g{background:none;color:var(--d-sub)}
+.btn-g:hover{background:var(--d-surf)}
+.btn.full{width:100%}
+.row{display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start}
+.col-main{flex:999 1 480px;min-width:0;display:flex;flex-direction:column;gap:20px}
+.col-side{flex:1 1 300px;min-width:0;display:flex;flex-direction:column;gap:16px}
+.card{background:#fff;border:1px solid var(--d-bdr);border-radius:var(--r);overflow:hidden}
+.card-h{background:var(--d-surf);border-bottom:1px solid var(--d-bdr);padding:12px 18px;min-height:50px;display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}
+.card-h h2{margin:0;font-size:15px;font-weight:700}
+.card-h .r{margin-left:auto}
+.card-b{padding:18px}
+.card-b.tight{padding:6px 0}
+.prog{height:4px;background:var(--d-bdr);border-radius:2px;overflow:hidden;flex-basis:100%}
+.prog i{display:block;height:100%;background:#000;transition:width .3s}
+.chk{display:flex;flex-wrap:wrap;gap:12px 14px;padding:14px 18px;border-bottom:1px solid var(--d-surf);align-items:center}
+.chk:last-child{border-bottom:0}
+.chk .ic{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px;font-weight:700}
+.ic.done{background:var(--ok-dot);color:#fff}
+.ic.now{background:#000;color:#fff}
+.ic.todo{background:var(--d-surf);border:1px solid var(--d-bdr);color:var(--d-sub)}
+.chk .t{flex:1;min-width:180px}
+.chk .t b{display:block;font-weight:600}
+.chk .t span{display:block;font-size:12px;color:var(--d-muted);margin-top:2px}
+.chk.is-done .t b{color:var(--d-sub);text-decoration:line-through}
+.chk .more{flex-basis:100%;padding-left:38px;display:flex;flex-direction:column;gap:8px}
+.key{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;background:#fff;border:1px solid var(--d-bdr);border-radius:var(--r);padding:9px 12px}
+.key .k{font-size:11px;font-weight:700;color:var(--d-sub);width:100px}
+.key code{flex:1;min-width:150px;font-family:var(--f-mono);font-size:12px;word-break:break-all}
+.small{font-size:12px;color:var(--d-muted)}
+.code{background:#0F172A;color:#E2E8F0;border-radius:var(--r);padding:12px 14px;font-family:var(--f-mono);font-size:12px;line-height:1.6;overflow-x:auto;white-space:pre;margin:0}
+.code .c{color:#94A3B8}.code .s{color:#86EFAC}.code .n{color:#FDE68A}
+.inline-form{display:flex;flex-wrap:wrap;gap:8px}
+.inline-form input{flex:1 1 220px;min-width:0}
+.list-mini{display:flex;flex-direction:column;gap:10px}
+.list-mini .it{display:flex;align-items:center;gap:10px;font-size:13px}
+.list-mini .it b{flex:1;font-weight:600}
+.empty{text-align:center;padding:36px 20px;color:var(--d-muted);font-size:13px}
+.empty b{display:block;color:var(--d-fg);font-size:14px;margin-bottom:4px}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.kpi{background:#fff;border:1px solid var(--d-bdr);border-radius:var(--r);padding:16px}
+.kpi span{display:block;font-size:11px;font-weight:600;color:var(--d-muted);text-transform:uppercase;letter-spacing:.06em}
+.kpi b{display:block;font-size:24px;font-weight:700;letter-spacing:-.5px;margin-top:8px;font-variant-numeric:tabular-nums}
+table.tb{width:100%;border-collapse:collapse;font-size:13px}
+.tb th{font-size:11px;font-weight:700;color:var(--d-muted);text-transform:uppercase;letter-spacing:.07em;padding:10px 14px;text-align:left;border-bottom:1px solid var(--d-bdr);white-space:nowrap}
+.tb td{padding:12px 14px;border-bottom:1px solid var(--d-surf);white-space:nowrap;font-variant-numeric:tabular-nums}
+.tb tr:last-child td{border-bottom:0}
+.tbwrap{overflow-x:auto}
+
+/* tracker */
+.trk{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.trk li{border:1px solid var(--d-bdr);border-radius:var(--r);padding:14px;display:flex;flex-direction:column;gap:6px}
+.trk li.d{border-color:var(--ok-bd);background:var(--ok-bg)}
+.trk li.a{border:1.5px solid #000}
+.trk li b{font-size:14px}
+.trk li span{font-size:12px;color:var(--d-sub)}
+.trk li.d span{color:var(--ok)}
+
+/* activation */
+.act{display:grid;grid-template-columns:280px minmax(0,1fr);gap:20px;align-items:start}
+.rail{display:flex;flex-direction:column;gap:12px;position:sticky;top:120px}
+.rail-h{padding:11px 14px;border-bottom:1px solid var(--d-bdr);background:var(--d-surf);font-size:11px;font-weight:700;color:var(--d-sub);text-transform:uppercase;letter-spacing:.08em;display:flex;justify-content:space-between}
+.rail ol{list-style:none;margin:0;padding:6px}
+.rs{display:flex;gap:11px;align-items:flex-start;padding:8px 10px;border-radius:var(--r-sm);width:100%;border:0;background:none;text-align:left}
+.rs:hover:not(:disabled){background:var(--d-surf)}
+.rs:disabled{cursor:default}
+.rs[aria-current="step"]{background:var(--d-surf)}
+.rs .rd{width:22px;height:22px;border-radius:50%;flex-shrink:0;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.rs .rd.done,.rs .rd.act{background:#000;color:#fff}
+.rs .rd.idle{background:var(--d-surf);border:1px solid var(--d-bdr);color:var(--d-sub)}
+.rs .rd.skip{background:#fff;border:1px dashed #CBD5E1;color:var(--d-muted)}
+.rs .rn{display:block;font-size:13px;font-weight:600;color:var(--d-sub);line-height:1.3}
+.rs[aria-current="step"] .rn{color:var(--d-fg);font-weight:700}
+.rs .rd.done + span .rn{color:var(--d-fg)}
+.rs .rsub{display:block;font-size:11px;color:var(--d-muted);margin-top:1px}
+.rs .rsub.ok{color:var(--ok)}
+.tip{background:var(--warn-bg);border:1px solid var(--warn-bd);border-radius:var(--r);padding:12px 14px;color:var(--warn)}
+.tip b{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px}
+.tip p{margin:0;font-size:13px;line-height:1.6}
+.banner{display:flex;gap:10px;align-items:flex-start;border-radius:var(--r);padding:11px 14px;font-size:13px;line-height:1.55;border:1px solid}
+.banner.info{background:var(--info-bg);border-color:var(--info-bd);color:var(--info)}
+.banner.err{background:var(--err-bg);border-color:var(--err-bd);color:var(--err)}
+.banner.ok{background:var(--ok-bg);border-color:var(--ok-bd);color:var(--ok)}
+.banner svg{flex-shrink:0;margin-top:2px}
+.fsub{margin:0 0 18px;font-size:13px;color:var(--d-sub);line-height:1.6}
+.fgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.fw{display:flex;flex-direction:column;gap:6px;position:relative;min-width:0}
+.fw.full{grid-column:1/-1}
+.fl{display:flex;align-items:center;gap:6px}
+.fl label{flex:1;font-size:12px;font-weight:600;color:var(--d-sub)}
+.fl label i{color:#DC2626;font-style:normal}
+.fl label em{font-style:normal;font-weight:500;color:var(--d-muted)}
+.src{font-size:10px;font-weight:700;border-radius:100px;padding:2px 8px}
+.src.su{background:var(--ok-bg);color:var(--ok)}
+.src.mca{background:var(--info-bg);color:var(--info)}
+.info-b{width:18px;height:18px;border-radius:50%;border:1px solid #CBD5E1;background:#fff;font-size:10px;font-style:italic;font-weight:700;color:var(--d-sub);padding:0;line-height:1;flex-shrink:0}
+.info-b:hover{background:#000;color:#fff;border-color:#000}
+.fi{height:40px;padding:0 12px;border:1px solid var(--d-bdr);border-radius:var(--r);font-size:14px;background:#fff;width:100%;min-width:0;transition:border-color .15s, box-shadow .15s}
+textarea.fi{height:auto;min-height:84px;padding:10px 12px;resize:vertical;line-height:1.5}
+select.fi{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 16 16' fill='none' stroke='%2364748B' stroke-width='1.5'%3E%3Cpath d='M4 6l4 4 4-4'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px}
+.fi:focus{outline:none;border-color:#000;box-shadow:0 0 0 3px rgba(0,0,0,.06)}
+.fi.bad{border-color:#DC2626;box-shadow:0 0 0 3px rgba(220,38,38,.08)}
+.ferr{font-size:11px;color:#B91C1C;font-weight:500}
+.fhint{font-size:11px;color:var(--d-muted)}
+.tt{position:absolute;top:24px;left:0;right:0;z-index:15;background:#fff;border:1px solid var(--d-bdr);border-radius:var(--r);box-shadow:0 8px 24px rgba(0,0,0,.1);overflow:hidden}
+.tt-h{display:flex;justify-content:space-between;align-items:center;padding:10px 12px 6px;font-size:12px;font-weight:700}
+.tt-b{padding:0 12px 10px;font-size:12px;color:var(--d-sub);line-height:1.65}
+.tt-b strong{color:var(--d-fg)}
+.tt-eg{margin-top:8px;background:var(--d-surf);border:1px solid var(--d-bdr);border-radius:var(--r-sm);padding:7px 10px;font-size:12px;font-weight:600;color:var(--d-fg)}
+.tt-f{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 12px;background:var(--d-surf);font-size:11px;color:var(--d-muted)}
+.mca{background:var(--d-surf);border:1px solid var(--d-bdr);border-radius:var(--r);padding:14px;display:flex;flex-direction:column;gap:8px;margin-bottom:18px}
+.mca label{font-size:12px;font-weight:600;color:var(--d-sub)}
+.svc-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.svc{border:1.5px solid var(--d-bdr);border-radius:var(--r);padding:14px;background:#fff;text-align:left;position:relative;display:flex;flex-direction:column;gap:6px;transition:border-color .12s}
+.svc:hover{border-color:#94A3B8}
+.svc[aria-pressed="true"]{border-color:#000;background:#FAFAFA;box-shadow:0 0 0 2px rgba(0,0,0,.06)}
+.svc .radio{position:absolute;top:12px;right:12px;width:16px;height:16px;border-radius:4px;border:1.5px solid var(--d-bdr);background:#fff;display:flex;align-items:center;justify-content:center}
+.svc[aria-pressed="true"] .radio{background:#000;border-color:#000}
+.svc b{font-size:13px;padding-right:22px}
+.svc span{font-size:12px;color:var(--d-sub);line-height:1.5}
+.ents{display:flex;flex-wrap:wrap;gap:4px}
+.etag{font-size:10px;font-weight:600;padding:2px 7px;border-radius:100px}
+.e-dec{background:#EFF6FF;color:#1D4ED8}.e-dfin{background:#F0FDFA;color:#0F766E}.e-ifsc{background:#F5F3FF;color:#5B21B6}
+.doc{display:flex;flex-direction:column;gap:7px;margin-bottom:14px}
+.doc-l{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:12px;font-weight:600;color:var(--d-sub)}
+.doc-l span:first-child{flex:1}
+.doc-l i{color:#DC2626;font-style:normal}
+.drop{display:flex;flex-wrap:wrap;align-items:center;gap:12px;border:1.5px dashed #CBD5E1;border-radius:var(--r);padding:14px 16px;background:#fff;transition:border-color .12s, background .12s}
+.drop.opt{background:#FAFBFC;border-color:var(--d-bdr)}
+.drop.drag{border-color:#000;background:var(--d-surf)}
+.drop.bad{border-color:#DC2626;background:var(--err-bg)}
+.drop span{flex:1;min-width:170px;font-size:12px;color:var(--d-muted)}
+.up{display:flex;flex-wrap:wrap;align-items:center;gap:10px;background:var(--d-surf);border:1px solid var(--d-bdr);border-radius:var(--r);padding:10px 12px}
+.up .fic{width:30px;height:30px;border-radius:var(--r-sm);background:var(--d-bdr);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.up .fn{flex:1;min-width:150px}
+.up .fn b{display:block;font-size:13px;word-break:break-all}
+.up .fn span{font-size:11px;color:var(--d-muted)}
+.f-foot{border-top:1px solid var(--d-bdr);padding:14px 18px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
+.f-foot .r{display:flex;gap:8px;flex-wrap:wrap}
+.rv{border:1px solid var(--d-bdr);border-radius:var(--r);overflow:hidden;margin-bottom:12px}
+.rv-h{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--d-surf);border-bottom:1px solid var(--d-bdr);font-size:13px;font-weight:700}
+.rv dl{margin:0;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);font-size:13px}
+.rv dt,.rv dd{padding:8px 14px;border-bottom:1px solid var(--d-surf);margin:0;min-width:0}
+.rv dt{color:var(--d-sub)}
+.rv dd{font-weight:500;word-break:break-word}
+.rv dd.miss{color:var(--d-muted);font-weight:400}
+
+/* modal, toast, chat, demo */
+.ov{position:fixed;inset:0;z-index:100;background:rgba(15,23,42,.45);display:flex;align-items:flex-start;justify-content:center;padding:max(64px,env(safe-area-inset-top,0px)) 16px 16px;overflow-y:auto}
+.mod{width:100%;max-width:520px;background:#fff;border-radius:12px;box-shadow:0 16px 48px rgba(0,0,0,.18);overflow:hidden;font-family:var(--f-dash)}
+.mod-b{padding:24px 26px;display:flex;flex-direction:column;gap:14px}
+.mod-b h2{margin:0;font-size:18px;font-weight:700;letter-spacing:-.2px}
+.mod-b p{margin:0;font-size:14px;color:var(--d-sub);line-height:1.6}
+.mod-f{background:var(--d-surf);border-top:1px solid var(--d-bdr);padding:14px 26px;display:flex;flex-wrap:wrap;justify-content:flex-end;gap:8px}
+.mod-ic{width:44px;height:44px;border-radius:var(--r);background:var(--d-surf);border:1px solid var(--d-bdr);display:flex;align-items:center;justify-content:center}
+.vsteps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
+.vsteps li{display:flex;gap:12px;align-items:flex-start}
+.vsteps b{display:block;font-size:14px}
+.vsteps span{display:block;font-size:12px;color:var(--d-sub);margin-top:1px}
+#toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,120px);background:#000;color:#fff;border-radius:var(--r);padding:10px 18px;font-size:13px;font-weight:600;z-index:300;transition:transform .25s ease;pointer-events:none;max-width:calc(100% - 32px);text-align:center;font-family:var(--f-dash)}
+#toast.show{transform:translate(-50%,0)}
+#chat{position:fixed;right:20px;bottom:calc(20px + env(safe-area-inset-bottom,0px));z-index:90;font-family:var(--f-dash)}
+.fab{display:inline-flex;align-items:center;gap:8px;height:46px;padding:0 18px;border:0;border-radius:100px;background:#000;color:#fff;font-size:13px;font-weight:700;box-shadow:0 8px 24px rgba(0,0,0,.22)}
+.cb{width:min(360px,calc(100vw - 40px));background:#fff;border:1px solid var(--d-bdr);border-radius:var(--r);box-shadow:0 8px 32px rgba(0,0,0,.14);display:flex;flex-direction:column;max-height:min(480px,calc(100vh - 120px));overflow:hidden}
+.cb-h{display:flex;align-items:center;justify-content:space-between;padding:0 14px;height:52px;background:#000;color:#fff;flex-shrink:0}
+.cb-h b{font-size:13px}.cb-h span{display:block;font-size:10px;color:rgba(255,255,255,.65)}
+.cb-h button{width:28px;height:28px;border-radius:var(--r-sm);background:rgba(255,255,255,.12);border:0;color:#fff}
+.cb-m{flex:1;overflow-y:auto;padding:12px 14px;display:flex;flex-direction:column;gap:8px;min-height:180px}
+.msg{max-width:88%;font-size:12px;line-height:1.55;padding:8px 11px}
+.msg.u{align-self:flex-end;background:#000;color:#fff;border-radius:var(--r) var(--r) 3px var(--r)}
+.msg.a{align-self:flex-start;background:var(--d-surf);border:1px solid var(--d-bdr);border-radius:var(--r) var(--r) var(--r) 3px}
+.msg code{background:#fff;border:1px solid var(--d-bdr);border-radius:4px;padding:1px 5px;font-size:11px;font-family:var(--f-mono)}
+.qchips{display:flex;flex-wrap:wrap;gap:6px}
+.qchips button{font-size:11px;font-weight:600;color:var(--d-sub);background:#fff;border:1px solid var(--d-bdr);border-radius:100px;padding:5px 11px}
+.qchips button:hover{border-color:#000;color:var(--d-fg)}
+.cb-i{display:flex;gap:7px;padding:10px 12px;border-top:1px solid var(--d-bdr)}
+.cb-i input{flex:1;min-width:0;height:36px;border:1px solid var(--d-bdr);border-radius:var(--r);padding:0 10px;font-size:12px}
+.cb-i input:focus{outline:none;border-color:#000}
+#demo{position:fixed;left:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:95;font-family:var(--f-dash)}
+.demo-btn{display:inline-flex;align-items:center;gap:7px;height:36px;padding:0 14px;border-radius:100px;border:1px dashed #94A3B8;background:#fff;color:var(--d-dark);font-size:12px;font-weight:700;box-shadow:0 4px 14px rgba(0,0,0,.08)}
+.demo-pop{position:absolute;bottom:44px;left:0;width:280px;background:#fff;border:1px dashed #94A3B8;border-radius:var(--r);box-shadow:0 12px 32px rgba(0,0,0,.12);padding:12px;display:flex;flex-direction:column;gap:6px}
+.demo-pop .lbl{font-size:10px;font-weight:700;color:var(--d-muted);text-transform:uppercase;letter-spacing:.08em;margin:6px 2px 2px}
+.demo-pop button{text-align:left;background:none;border:1px solid var(--d-bdr);border-radius:var(--r-sm);padding:8px 10px;font-size:12px;font-weight:600}
+.demo-pop button:hover:not(:disabled){background:var(--d-surf)}
+.demo-pop button:disabled{opacity:.4;cursor:not-allowed}
+.demo-pop .st{font-size:12px;color:var(--d-sub);padding:2px}
+
+/* responsive */
+@media (max-width: 1080px){
+  .act{grid-template-columns:minmax(0,1fr)}
+  .rail{position:static}
+  .w-grid4{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width: 900px){
+  .w-hero{grid-template-columns:minmax(0,1fr);padding-block:44px 32px}
+  .w-hero h1{font-size:36px}
+  .w-links{display:none}
+  .w-grid3{grid-template-columns:minmax(0,1fr)}
+  .w-auth{grid-template-columns:minmax(0,1fr)}
+  .w-auth-art{display:none}
+  .d-body{grid-template-columns:minmax(0,1fr)}
+  .d-side{position:static;min-height:0;flex-direction:row;overflow-x:auto;padding:8px 12px;gap:4px;border-right:0;border-bottom:1px solid var(--d-bdr)}
+  .d-grp{flex-direction:row;gap:4px}
+  .d-grp-l{display:none}
+  .nv{width:auto;white-space:nowrap;height:36px}
+  .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .d-search{display:none}
+}
+@media (max-width: 640px){
+  .fgrid,.svc-grid,.w-row2{grid-template-columns:minmax(0,1fr)}
+  .trk{grid-template-columns:minmax(0,1fr)}
+  .w-grid4{grid-template-columns:minmax(0,1fr)}
+  .w-sec{padding-block:48px}
+  .w-sec h2{font-size:26px}
+  .w-cta{padding:28px}
+  .w-trust{font-size:17px}
+  .d-main{padding:16px 16px calc(128px + env(safe-area-inset-bottom,0px))}
+  .d-top-row{padding:8px 16px}
+  .strip{padding:9px 16px}
+  .w-btn-o.hide-sm{display:none}
+  .d-tr .lnk{display:none}
+  .rv dl{grid-template-columns:minmax(0,1fr)}
+  .rv dt{border-bottom:0;padding-bottom:0}
+}
+</style>
+
+<div id="app"></div>
+<div id="chat" hidden></div>
+<div id="demo" hidden></div>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+'use strict';
+
+/* ───────────── Icons ───────────── */
+const I = {
+  arrow:'<svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg>',
+  back:'<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M13 8H3M7 4L3 8l4 4"/></svg>',
+  check:'<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M3 8l3.5 3.5L13 5"/></svg>',
+  lock:'<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="7" width="10" height="7" rx="1.5"/><path d="M5.5 7V5a2.5 2.5 0 015 0v2"/></svg>',
+  lockL:'<svg width="20" height="20" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><rect x="3" y="7" width="10" height="7" rx="1.5"/><path d="M5.5 7V5a2.5 2.5 0 015 0v2"/></svg>',
+  search:'<svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="6.5" cy="6.5" r="4"/><path d="M10 10l3 3"/></svg>',
+  bell:'<svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M8 2a4 4 0 014 4v3l1 2H3l1-2V6a4 4 0 014-4z"/><path d="M6.5 13a1.5 1.5 0 003 0"/></svg>',
+  info:'<svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="8" cy="8" r="6"/><path d="M8 7v4M8 5v.5"/></svg>',
+  clock:'<svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg>',
+  file:'<svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="#334155" stroke-width="1.5" aria-hidden="true"><path d="M4 2h6l4 4v8a1 1 0 01-1 1H4a1 1 0 01-1-1V3a1 1 0 011-1z"/><path d="M10 2v4h4"/></svg>',
+  home:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="1.5" y="1.5" width="5" height="5" rx="1"/><rect x="9.5" y="1.5" width="5" height="5" rx="1"/><rect x="1.5" y="9.5" width="5" height="5" rx="1"/><rect x="9.5" y="9.5" width="5" height="5" rx="1"/></svg>',
+  upi:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="8" cy="8" r="5.5"/><path d="M5.5 8h5M10 6l2 2-2 2"/></svg>',
+  card:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="2" y="3" width="12" height="10" rx="1.5"/><path d="M5 7h6M5 10h4"/></svg>',
+  user:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="8" cy="5.5" r="2.5"/><path d="M2.5 14c0-3 2.5-5 5.5-5s5.5 2 5.5 5"/></svg>',
+  loan:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M8 2v12M5 5h4.5a2.5 2.5 0 010 5H5"/></svg>',
+  globe:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M8 1.5l6 4v5l-6 4-6-4v-5z"/></svg>',
+  key:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="5" cy="10" r="3"/><path d="M7.2 7.8L13 2M11 4l2 2"/></svg>',
+  hook:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M2 8h12M10.5 5l3 3-3 3"/></svg>',
+  team:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="6" cy="5.5" r="2.5"/><path d="M1.5 13.5c0-2.5 2-4.5 4.5-4.5s4.5 2 4.5 4.5M11 4a2 2 0 010 4M12.5 13.5c0-1.7-.8-3-2-3.8"/></svg>',
+  rocket:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M8 13s-3-2-3-6 3-5.5 3-5.5S11 3 11 7s-3 6-3 6z"/><circle cx="8" cy="6.5" r="1.2"/></svg>',
+  spark:'<svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 1.5C5.24 1.5 3 3.74 3 6.5c0 1.76.9 3.3 2.27 4.21L5 12h6l-.27-1.29C12.1 9.8 13 8.26 13 6.5c0-2.76-2.24-5-5-5zM6.5 12v1.5h3V12h-3z"/></svg>',
+  x:'<svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8"/></svg>',
+  mark:'<svg width="14" height="14" viewBox="0 0 16 16" fill="#fff" aria-hidden="true"><rect x="1" y="1" width="6" height="6" rx="1"/><rect x="9" y="1" width="6" height="6" rx="1"/><rect x="1" y="9" width="6" height="6" rx="1"/><rect x="9" y="9" width="6" height="6" rx="1" opacity=".4"/></svg>',
+  google:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="8" cy="8" r="6"/><path d="M8 8h5.5M8 5.5v5"/></svg>'
+};
+
+/* ───────────── Decentro logo (official SVG; currentColor = black or white variant) ───────────── */
+const LOGO_PATHS = '<polygon points="1587 313.7 1433.2 119.9 1432.8 119.4 1372.9 119.4 1372.9 416.2 1433.2 416.2 1433.2 221.9 1587 415.6 1587.4 416.2 1647.3 416.2 1647.3 119.4 1587 119.4 1587 313.7"/>'+
+'<path d="M248,119.4H118.2v176.3h60.1v-116h68c62.4,0,102.8,34.9,102.8,88.2s-40.4,88.2-102.8,88.2h-7.7v60.2h9.4c96.3,0,162-59.4,162-148.4s-65.8-148.4-162-148.4h0Z"/>'+
+'<path d="M2584.6,161.8c-27-27-64.6-41.8-105.7-41.8s-78.7,14.9-105.8,42c-27.1,27.1-42,64.7-42,105.8s14.9,78.7,42,105.8c27.1,27.1,64.6,42,105.8,42s78.7-14.9,105.7-41.9c27-27,42-64.7,42-105.9s-15-78.9-42.1-105.9h0ZM2416.1,201.9c16-16.7,38.3-25.9,62.7-25.9s46.6,9.2,62.7,25.9c16.1,16.7,25,40.1,25,65.8s-8.9,49.1-25,65.8c-16.1,16.8-38.3,25.9-62.7,25.9s-46.7-9.2-62.7-25.9-25-40.1-25-65.8,8.9-49.1,25-65.8h0Z"/>'+
+'<polygon points="1707.6 179.4 1807.9 179.4 1807.9 415.4 1868.2 415.4 1868.2 179.4 1968.6 179.4 1968.6 119.2 1707.6 119.2 1707.6 179.4"/>'+
+'<path d="M2270.6,225.4c0-61.2-49.3-106-114.6-106h-127.2v296.8h60.3v-85.6h45.9c3.6,0,7.4,0,11.1-.3l57.7,86h66.8l-64.2-97.3c41.5-16.2,64.2-50.5,64.2-93.4h0ZM2089.1,179.7h64.3c57,0,57,38.2,57,45.7s0,44.8-57,44.8h-64.3v-90.5h0Z"/>'+
+'<polygon points="530.5 297.7 641 297.7 641 237.4 530.5 237.4 530.5 179.7 700.7 179.7 700.7 119.2 470.3 119.2 470.3 415.9 701.3 415.9 701.3 355.8 530.5 355.8 530.5 297.7"/>'+
+'<polygon points="1141.8 297.7 1252.3 297.7 1252.3 237.4 1141.8 237.4 1141.8 179.7 1312 179.7 1312 119.2 1081.6 119.2 1081.6 415.9 1312.6 415.9 1312.6 355.8 1141.8 355.8 1141.8 297.7"/>'+
+'<path d="M1019.3,367.2l1.1,1.2c-1.7,1.9-3.5,3.8-5.3,5.6-24,24-56.5,38.5-92.3,41.4-4.4.4-8.9.5-13.4.5s-8.9-.2-13.3-.5c-4.5-.4-8.9-.9-13.3-1.6-2.2-.4-4.3-.8-6.5-1.2h0c-2.2-.5-4.3-.9-6.4-1.5h0c-.8-.2-1.6-.4-2.4-.6-3.2-.9-6.3-1.8-9.3-2.8-.8-.3-1.5-.5-2.3-.8-1.8-.7-3.7-1.4-5.5-2.1-1.2-.5-2.4-1-3.6-1.5,0,0,0,0,0,0-1.2-.5-2.4-1.1-3.5-1.6-.8-.4-.8-.4,0,0-14.7-6.9-28.1-16.2-39.5-27.7-27.1-27.1-42-64.8-42-105.9s15-78.8,42-105.9c15.7-15.7,34.8-27.3,56.2-34.3.7-.2,1.4-.4,2.1-.7h0c2.5-.8,5-1.5,7.5-2.1,1.7-.4,3.4-.8,5.1-1.2h0c5.4-1.2,11-2.1,16.7-2.8,2.3-.2,4.5-.4,6.8-.6,3.8-.3,7.6-.4,11.5-.4s1.9,0,2.9,0c.5,0,1.1,0,1.6,0,.9,0,1.7,0,2.6,0,.6,0,1.3,0,1.9,0,.7,0,1.4,0,2.1.1.1,0,.3,0,.4,0,2.1.2,4.2.3,6.3.6,1.1.1,2.1.2,3.2.4.9.1,1.8.2,2.7.4,2.3.3,4.5.7,6.8,1.1,1.6.3,3.1.6,4.6.9s3.1.7,4.6,1.1,1.5.4,2.3.6c2.3.6,4.5,1.3,6.7,2,21.7,6.9,41.2,18.6,57,34.5,2,2,4,4.1,5.8,6.2l-36.3,35.6-.6.5-5.5,5.4c-2-2.6-4.1-5.1-6.4-7.5-16.1-16.7-38.3-25.9-62.7-25.9s-43.4,7.9-59.1,22.3c-.2.2-.4.3-.5.5-1,1-2.1,2-3.1,3-16.1,16.8-25,40.2-25,65.9s8.9,49.2,25,65.9c.9.9,1.8,1.9,2.8,2.8,15.8,15,36.9,23.1,59.9,23.1s46.6-9.1,62.7-25.9c2.2-2.3,4.3-4.8,6.3-7.3l31.5,31.3.5.6,9,8.9h0Z"/>'+
+'<path d="M123.8,545.1v25.1h36v8.8h-36.1v29.1h-10.3v-71.9h50.7v8.9h-40.5,0Z"/>'+
+'<path d="M230.1,536.2h10.3v71.9h-10.3v-71.9Z"/>'+
+'<path d="M375.1,536.2v71.9h-8.4l-43.1-53.6v53.6h-10.3v-71.9h8.4l43.1,53.6v-53.6h10.3Z"/>'+
+'<path d="M462.3,545.1h-24.6v-8.9h59.5v8.9h-24.6v63h-10.2v-63Z"/>'+
+'<path d="M611.8,599.1v8.9h-52.2v-71.9h50.7v8.9h-40.5v22.1h36v8.7h-36v23.2h41.9Z"/>'+
+'<path d="M673.7,572.1c0-21.3,16.2-36.8,38.1-36.8s20.8,3.8,27.3,11.2l-6.7,6.5c-5.5-5.8-12.3-8.5-20.2-8.5-16.2,0-28.2,11.7-28.2,27.6s12,27.6,28.2,27.6,14.7-2.8,20.2-8.6l6.7,6.5c-6.6,7.4-16.2,11.3-27.4,11.3-21.8,0-38-15.5-38-36.8h0Z"/>'+
+'<path d="M867,536.2v71.9h-10.3v-32h-41.3v32h-10.3v-71.9h10.3v30.9h41.3v-30.9h10.3Z"/>'+
+'<path d="M1018.9,536.2h10.3v71.9h-10.3v-71.9Z"/>'+
+'<path d="M1163.9,536.2v71.9h-8.4l-43.1-53.6v53.6h-10.3v-71.9h8.4l43.1,53.6v-53.6h10.3Z"/>'+
+'<path d="M1247.1,545.1v25.1h36.1v8.8h-36.1v29.1h-10.3v-71.9h50.7v8.9h-40.5Z"/>'+
+'<path d="M1401.4,608l-15.5-22.1c-1.4,0-3,.2-4.5.2h-17.8v21.9h-10.3v-71.9h28c18.7,0,30,9.5,30,25.1s-5.8,19.1-15.8,22.7l17.1,24.1h-11.2ZM1401.1,561.2c0-10.3-6.9-16.1-20-16.1h-17.5v32.3h17.5c13.2,0,20-6,20-16.2Z"/>'+
+'<path d="M1525.2,590.1h-38.2l-7.9,18h-10.6l32.6-71.9h10.2l32.7,71.9h-10.8l-7.9-18h0ZM1521.6,581.9l-15.5-35.2-15.5,35.2h31Z"/>'+
+'<path d="M1599.3,599.8l3.8-8c5.3,4.8,14.5,8.3,23.7,8.3s17.8-4.8,17.8-11.1c0-17.6-43.6-6.5-43.6-33.2s8.6-20.5,27.5-20.5,17.2,2.3,23.1,6.4l-3.4,8.2c-6.3-4-13.3-5.8-19.7-5.8-12.2,0-17.5,5.1-17.5,11.4,0,17.6,43.6,6.6,43.6,33s-8.8,20.4-27.8,20.4-21.8-3.7-27.5-9h0Z"/>'+
+'<path d="M1734.3,545.1h-24.7v-8.9h59.5v8.9h-24.7v63h-10.2v-63h0Z"/>'+
+'<path d="M1879.7,608l-15.5-22.1c-1.4,0-3,.2-4.5.2h-17.8v21.9h-10.3v-71.9h28c18.7,0,30,9.5,30,25.1s-5.8,19.1-15.8,22.7l17.1,24.1h-11.2ZM1879.4,561.2c0-10.3-6.9-16.1-20-16.1h-17.5v32.3h17.5c13.2,0,20-6,20-16.2Z"/>'+
+'<path d="M1957.1,577v-40.9h10.3v40.5c0,15.9,7.3,23.1,20.2,23.1s20.3-7.2,20.3-23.1v-40.5h10v40.9c0,20.8-11.4,31.8-30.4,31.8s-30.4-11-30.4-31.8h0Z"/>'+
+'<path d="M2084.4,572.1c0-21.3,16.2-36.8,38.1-36.8s20.8,3.8,27.3,11.2l-6.7,6.5c-5.6-5.8-12.3-8.5-20.2-8.5-16.2,0-28.2,11.7-28.2,27.6s12,27.6,28.2,27.6,14.7-2.8,20.2-8.6l6.7,6.5c-6.6,7.4-16.2,11.3-27.4,11.3-21.8,0-38-15.5-38-36.8h0Z"/>'+
+'<path d="M2229.4,545.1h-24.6v-8.9h59.5v8.9h-24.6v63h-10.2v-63h0Z"/>'+
+'<path d="M2324.8,577v-40.9h10.3v40.5c0,15.9,7.3,23.1,20.2,23.1s20.3-7.2,20.3-23.1v-40.5h10v40.9c0,20.8-11.4,31.8-30.4,31.8s-30.4-11-30.4-31.8h0Z"/>'+
+'<path d="M2506.1,608l-15.5-22.1c-1.4,0-3,.2-4.5.2h-17.8v21.9h-10.3v-71.9h28c18.7,0,30,9.5,30,25.1s-5.8,19.1-15.8,22.7l17.1,24.1h-11.2ZM2505.7,561.2c0-10.3-6.9-16.1-20-16.1h-17.5v32.3h17.5c13.1,0,20-6,20-16.2Z"/>'+
+'<path d="M2636.2,599.1v8.9h-52.2v-71.9h50.7v8.9h-40.5v22.1h36.1v8.7h-36.1v23.2h41.9Z"/>';
+/* Cropped to the artwork (x 100–2650, y 105–625) so the logo sits flush in nav bars. */
+function logo(h){ const w = Math.round(h * 2550 / 520); return '<svg class="logo" width="'+w+'" height="'+h+'" viewBox="100 105 2550 520" role="img" aria-label="Decentro"><rect fill="#0092ff" x="120.6" y="357.1" width="60.3" height="60.3"/><g fill="currentColor">'+LOGO_PATHS+'</g></svg>'; }
+
+/* ───────────── Product data ───────────── */
+const PRODUCTS = {
+  payments:{ label:'Payment collections', svc:'Payment collections (domestic)', desc:'UPI, NACH and Virtual Accounts. Needs PA licence documents.', ents:['Decentro India','Decfin India'], pages:[['upi','UPI Collections',I.upi],['va','Virtual Accounts',I.card],['nach','NACH',I.hook]] },
+  kyc:{ label:'KYC & onboarding', svc:'KYC / AML validation', desc:'PAN, Aadhaar and bank account verification.', ents:['Decentro India'], pages:[['kyc','KYC Verification',I.user]] },
+  lending:{ label:'Lending', svc:'Lending infrastructure', desc:'Loan origination, disbursements and collections.', ents:['Decfin India'], pages:[['lending','Lending',I.loan]] },
+  ifsc:{ label:'Cross-border (GIFT City)', svc:'GIFT City / IFSC services', desc:'International payments, forex and cross-border flows.', ents:['Decfin IFSC (GIFT City)'], pages:[['xb','Cross-border',I.globe]] }
+};
+const ENT_CLS = {'Decentro India':'e-dec','Decfin India':'e-dfin','Decfin IFSC (GIFT City)':'e-ifsc'};
+const PAGE_INFO = {
+  upi:{ t:'UPI Collections', d:'Collect payments with UPI payment links and QR codes.', action:'Create test payment link', kind:'Payment link' },
+  va:{ t:'Virtual Accounts', d:'Issue virtual accounts and reconcile incoming transfers.', action:'Create test virtual account', kind:'Virtual account' },
+  nach:{ t:'NACH', d:'Register mandates and run recurring debits.', action:'Create test mandate', kind:'Mandate' },
+  kyc:{ t:'KYC Verification', d:'Verify PAN, Aadhaar and bank accounts.', action:'Run test PAN check', kind:'PAN check' },
+  lending:{ t:'Lending', d:'Originate, disburse and collect loans.', action:'Create test loan', kind:'Loan' },
+  xb:{ t:'Cross-border', d:'Receive international payments through GIFT City.', action:'Create test remittance', kind:'Remittance' }
+};
+
+/* ───────────── KYB form data (from Application Manager) ───────────── */
+const STEPS = [
+  { id:1, name:'What are you signing up for?', short:'Services' },
+  { id:2, name:'Your company information', short:'Company' },
+  { id:3, name:'About your director', short:'Director' },
+  { id:4, name:'Company ownership', short:'Ownership' },
+  { id:5, name:'Financial information', short:'Financials' },
+  { id:6, name:'Payment licence details', short:'PA licence' },
+  { id:7, name:'Upload documents', short:'Documents' },
+  { id:8, name:'Review & submit', short:'Review' }
+];
+const TIPS = {
+  1:'Pick every service you plan to use. Adding one later means a fresh review.',
+  2:'The legal name must match MCA records exactly, capitalisation and punctuation included. Fetching from your CIN avoids most mismatches.',
+  3:"Enter the director's name exactly as it appears on their PAN card, middle name included. A mismatch fails verification.",
+  4:'Most delays here come from leaving out foreign nationals or indirect owners. When in doubt, include the person.',
+  5:'Net worth is total assets minus total liabilities, not revenue or profit. Use your CA-certified balance sheet.',
+  6:'RBI reads the business model description. Say who pays you, what your role is, and who you pay out to.',
+  7:'Download a fresh Certificate of Incorporation from mca.gov.in. Blurry scans are the most common reason applications come back.',
+  8:'Check that every document carries your legal name exactly as entered in Step 2.'
+};
+const STEP_SUB = {
+  2:'Enter your company details exactly as registered with the Ministry of Corporate Affairs.',
+  3:'The primary director or authorised signatory. Name, PAN and date of birth are checked against government records.',
+  4:'Declare everyone who owns or controls 10% or more of the company, directly or indirectly. Required under PMLA.',
+  5:'Figures from your latest audited financials. Your settlement account is verified with a penny drop.',
+  6:'Required for payment collections. This goes into your RBI Payment Aggregator licence assessment.',
+  7:'Clear PDF, JPG or PNG copies. Maximum 10 MB per file.',
+  8:'Check everything once before you submit. You can edit any section.'
+};
+const FIELDS = {
+  co_name:{ l:'Legal company name', req:1, expl:'The <strong>official registered name</strong> exactly as in the MCA database and Certificate of Incorporation. Not a trading name.', eg:'Acme Finserv Private Limited' },
+  cin:{ l:'CIN', req:0, expl:'The 21-character <strong>Corporate Identification Number</strong> assigned by MCA.', eg:'U72900KA2018PTC112233', v:'cin' },
+  entity_type:{ l:'Type of entity', req:1, type:'select', opts:['Private Limited','Public Limited','LLP','Partnership','Sole Proprietorship'], expl:'The <strong>legal structure</strong> of your business.', eg:'Private Limited' },
+  incorp_date:{ l:'Date of incorporation', req:1, expl:'The date on your <strong>Certificate of Incorporation</strong>.', eg:'15/03/2018', v:'date' },
+  reg_address:{ l:'Registered office address', req:1, full:1, expl:'The address <strong>registered with MCA</strong>. It must match your MoA and GST certificate.', eg:'5th Floor, Prestige Tower, MG Road, Bengaluru 560001' },
+  co_pan:{ l:'Company PAN', req:1, expl:"The <strong>company's PAN</strong>, not a director's personal PAN. The 4th character is C for a company.", eg:'AACCA1234B', v:'pan', hint:"The company's PAN, not a director's." },
+  contact_email:{ l:'Contact email', req:1, type:'email', expl:'Where we send compliance updates and settlement notifications.', eg:'admin@acmefinserv.com', v:'email' },
+  gstin:{ l:'GSTIN', req:0, expl:'Your 15-character <strong>GST Identification Number</strong>. Leave blank if GST-exempt.', eg:'29AACCA1234B1ZK', v:'gstin' },
+  biz_desc:{ l:'Business description', req:0, full:1, type:'textarea', expl:'What you sell, who your customers are and how money flows, in 2–3 sentences.', eg:'B2B SaaS for logistics; businesses pay monthly via NACH.' },
+  dir_name:{ l:'Full name', req:1, expl:'The director\'s <strong>full legal name as on their PAN card</strong>, middle name included.', eg:'Rajiv Kumar Mehta' },
+  dir_desg:{ l:'Designation', req:1, expl:'The director\'s <strong>official title</strong>, matching MCA records.', eg:'Managing Director' },
+  dir_pan:{ l:'PAN', req:1, expl:'The director\'s <strong>personal PAN</strong>. The 4th character is P for an individual.', eg:'ABCPS1234K', v:'pan' },
+  dir_dob:{ l:'Date of birth', req:1, expl:'As printed on the director\'s PAN card.', eg:'12/04/1984', v:'date' },
+  dir_address:{ l:'Residential address', req:1, full:1, expl:'The director\'s <strong>home address</strong>, ideally matching Aadhaar.', eg:'14, Palm Avenue, Indiranagar, Bengaluru 560038' },
+  din:{ l:'DIN', req:0, expl:'The 8-digit <strong>Director Identification Number</strong> from MCA.', eg:'07423811', v:'din' },
+  dir_mobile:{ l:'Mobile number', req:1, type:'tel', expl:'Must be <strong>linked to the director\'s Aadhaar</strong>; used for OTP verification.', eg:'98765 43210', v:'mobile' },
+  ubo_name:{ l:'Full name', req:1, expl:'Any individual who <strong>owns or controls 10% or more</strong>, directly or indirectly.', eg:'Arun Sharma' },
+  ubo_pct:{ l:'Ownership %', req:1, expl:'Share of <strong>shares or voting rights</strong>, including indirect holdings.', eg:'51', v:'pct' },
+  ubo_id:{ l:'PAN or passport number', req:0, expl:'PAN for Indian nationals, passport for foreign nationals.', eg:'ABCPS1234K' },
+  ubo_nat:{ l:'Nationality', req:0, expl:'Country of citizenship. Foreign nationals need a passport copy.', eg:'Indian' },
+  ubo_address:{ l:'Residential address', req:0, full:1, expl:'Current home address.', eg:'14, Palm Avenue, Bengaluru 560038' },
+  turnover:{ l:'Annual turnover (FY 2025–26)', req:1, expl:'<strong>Gross revenue</strong> from audited financials or ITR.', eg:'₹ 1,20,00,000' },
+  networth:{ l:'Net worth (latest)', req:1, expl:'Total assets minus liabilities. A <strong>PA licence needs at least ₹15 crore</strong> (RBI).', eg:'₹ 15,00,00,000' },
+  bank_name:{ l:'Settlement bank', req:1, expl:'The bank holding the account where we settle your funds.', eg:'HDFC Bank' },
+  account_no:{ l:'Account number', req:1, expl:'Your settlement account, verified with a <strong>penny drop</strong>.', eg:'50100234567890', v:'acct' },
+  ifsc:{ l:'IFSC', req:1, expl:'The 11-character <strong>branch code</strong> on your cheque book or banking app.', eg:'HDFC0001234', v:'ifsc' },
+  monthly_vol:{ l:'Expected monthly volume', req:1, type:'select', opts:['','Less than ₹10L / month','₹10L – ₹1Cr / month','₹1Cr – ₹10Cr / month','More than ₹10Cr / month'], expl:'Your best estimate once live. You can revise it later.', eg:'₹1Cr – ₹10Cr / month' },
+  nw_cert_date:{ l:'Net worth certificate date', req:1, expl:'Date on the <strong>CA-certified net worth certificate</strong>. Must be within the last 3 months.', eg:'02/09/2026', v:'date' },
+  ca_firm:{ l:'Certifying CA firm', req:1, expl:'The <strong>ICAI-registered firm</strong> that issued the certificate.', eg:'M/s Sharma & Associates' },
+  existing_pg:{ l:'Current payment gateway', req:0, expl:'Your current gateway or aggregator, if any.', eg:'Razorpay, or None' },
+  biz_model:{ l:'How payments flow in your business', req:1, full:1, type:'textarea', expl:'<strong>Who pays you, your role, and who you pay out to.</strong> RBI reviews this for the PA licence.', eg:'Marketplace: buyers pay us, we settle to sellers minus 2%.' }
+};
+const STEP_FIELDS = {
+  2:['co_name','cin','entity_type','incorp_date','reg_address','co_pan','contact_email','gstin','biz_desc'],
+  3:['dir_name','dir_desg','dir_pan','dir_dob','dir_address','din','dir_mobile'],
+  4:['ubo_name','ubo_pct','ubo_id','ubo_nat','ubo_address'],
+  5:['turnover','networth','bank_name','account_no','ifsc','monthly_vol'],
+  6:['nw_cert_date','ca_firm','existing_pg','biz_model']
+};
+const DOCS = [
+  { id:'coi', l:'Certificate of Incorporation', req:()=>true, hint:'Download a fresh copy from mca.gov.in' },
+  { id:'moa', l:'Memorandum of Association', req:()=>true, hint:'From the MCA portal or company records' },
+  { id:'board_res', l:'Board resolution authorising the signatory', req:()=>true, hint:'On company letterhead, signed by at least two directors', template:true },
+  { id:'nw_cert', l:'CA-certified net worth certificate', req:s=>s.includes('payments'), only:'payments', hint:'Dated within the last 3 months' },
+  { id:'nbfc', l:'NBFC registration certificate', req:s=>s.includes('lending'), only:'lending', hint:'Issued by RBI' },
+  { id:'ifsc_reg', l:'IFSC entity registration', req:s=>s.includes('ifsc'), only:'ifsc', hint:'IFSCA registration for your GIFT City entity' },
+  { id:'gst', l:'GST registration certificate', req:()=>false, opt:true, hint:'Speeds up settlement account checks' }
+];
+const VALID = {
+  pan:[/^[A-Z]{5}[0-9]{4}[A-Z]$/,'Use the format ABCDE1234F: 5 letters, 4 digits, 1 letter.'],
+  cin:[/^[LU][0-9]{5}[A-Z]{2}[0-9]{4}[A-Z]{3}[0-9]{6}$/,'A CIN is 21 characters, like U72900KA2018PTC112233.'],
+  gstin:[/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z][0-9A-Z]Z[0-9A-Z]$/,'A GSTIN is 15 characters, like 29AACCA1234B1ZK.'],
+  date:[/^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/(19|20)[0-9]{2}$/,'Use DD/MM/YYYY.'],
+  email:[/^[^\s@]+@[^\s@]+\.[^\s@]+$/,'Enter a valid email address.'],
+  ifsc:[/^[A-Z]{4}0[A-Z0-9]{6}$/,'An IFSC is 11 characters: 4 letters, 0, then 6 characters.'],
+  din:[/^[0-9]{8}$/,'A DIN is 8 digits.'],
+  acct:[/^[0-9]{9,18}$/,'Account numbers are 9 to 18 digits.'],
+  mobile:[/^[6-9][0-9]{9}$/,'Enter a 10-digit Indian mobile number.'],
+  pct:[/^(100|[1-9][0-9])(\.[0-9]+)?$/,'Only owners with 10% or more need declaring.']
+};
+
+/* ───────────── State ───────────── */
+const KEY = 'decentro-signup-demo-v1';
+const fresh = () => ({
+  screen:'home', page:'home', env:'sandbox', session:false, preselect:[],
+  user:null, products:[], keys:null, liveKeys:null,
+  checklist:{ keys:false, call:false, webhook:false, team:false },
+  webhook:'', invites:[], tests:{},
+  kyb:{ step:1, done:[], values:{}, src:{}, docs:{}, declared:false, status:'not_started', appId:'', submittedAt:'', note:'' },
+  agentRequested:false
+});
+let S = load() || fresh();
+const UI = { errors:{}, tt:null, menu:false, modal:null, demo:false, reveal:{}, chat:{ open:false, field:'', expl:'', msgs:[] }, signupErr:{}, loginErr:'', showPass:false, testOut:null };
+
+function load(){ try{ const r = localStorage.getItem(KEY); return r ? JSON.parse(r) : null; }catch(e){ return null; } }
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
+
+/* ───────────── Helpers ───────────── */
+const $ = s => document.querySelector(s);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const today = () => new Date().toLocaleDateString('en-IN',{ day:'numeric', month:'short', year:'numeric' });
+const rand = (n, set) => { set = set || 'abcdefghijklmnopqrstuvwxyz0123456789'; let o=''; for(let i=0;i<n;i++) o += set[Math.floor(Math.random()*set.length)]; return o; };
+const slug = s => (s||'company').toLowerCase().replace(/[^a-z0-9]+/g,'').slice(0,18) || 'company';
+const svcs = () => S.kyb.values.services || [];
+const needsPA = () => svcs().includes('payments');
+const stepSkipped = n => n === 6 && !needsPA();
+const approved = () => S.kyb.status === 'approved';
+let tT;
+function toast(m){ const t = $('#toast'); t.textContent = m; t.classList.add('show'); clearTimeout(tT); tT = setTimeout(()=>t.classList.remove('show'), 2600); }
+function copyText(text, label){
+  const done = () => toast((label||'Copied') + ' to clipboard');
+  try{ navigator.clipboard.writeText(text).then(done).catch(()=>toast('Copy was blocked here. Select the text and copy it manually.')); }
+  catch(e){ toast('Copy was blocked here. Select the text and copy it manually.'); }
+}
+function initials(){ const u = S.user; return u ? ((u.first[0]||'') + (u.last[0]||'')).toUpperCase() : 'U'; }
+function stepCountDone(){ return STEPS.filter(s => s.id < 8 && (S.kyb.done.includes(s.id) || stepSkipped(s.id))).length + (S.kyb.status==='submitted'||approved() ? 1 : 0); }
+
+/* ───────────── WEBSITE ───────────── */
+function wordmark(){ return '<button class="wm" data-act="w-home" aria-label="Decentro home">'+logo(36)+'</button>'; }
+function wNav(){
+  const right = S.session
+    ? '<button class="w-btn w-btn-g sm" data-act="go-dash">Go to dashboard '+I.arrow+'</button>'
+    : '<button class="w-btn w-btn-t" data-act="w-login">Log in</button><button class="w-btn w-btn-o" data-act="w-signup">Sign Up</button>';
+  return '<header class="w-nav"><div class="w-wrap">'+wordmark()+
+    '<nav class="w-links" aria-label="Website"><button data-act="w-scroll" data-to="w-products">Products</button><button data-act="w-scroll" data-to="w-why">Why Decentro</button><button data-act="w-scroll" data-to="w-launch">How it works</button><button data-act="w-scroll" data-to="w-products">Developers</button><button data-act="w-scroll" data-to="w-cta">Company</button></nav>'+
+    '<div class="w-right">'+right+'</div></div></header>';
+}
+function renderHome(){
+  const prods = [
+    ['Multi-Collect','Collect funds from individuals or businesses and reconcile them directly from Virtual Accounts.','payments'],
+    ['UPI Payment Gateway','Collect payments over UPI with instant confirmation.','payments'],
+    ['Recurring Payments','Collect recurring payments from users without manual follow-ups.','payments'],
+    ['KYC & Onboarding','Verify PAN, Aadhaar and bank accounts to onboard customers in seconds.','kyc'],
+    ['Lending Infrastructure','Originate, disburse and collect loans through one stack.','lending'],
+    ['Cross-border via GIFT City','Receive international payments and manage forex flows.','ifsc']
+  ];
+  return '<div class="web">'+wNav()+
+  '<main><section class="w-wrap w-hero">'+
+    '<div><h1>Build <span class="typed" id="typed">Payments</span><br>into your platform!</h1>'+
+    '<p class="lead">Plug &amp; Play APIs and SDKs</p>'+
+    '<button class="w-btn w-btn-g" data-act="w-signup">Get Started Today</button>'+
+    '<div class="w-stats"><div><b>₹40,000 Cr+</b> Processed Annually</div><div><b>24 Cr+</b> API Transactions</div></div></div>'+
+    '<div class="w-heroart" aria-label="How you get started"><span class="lbl">Live in three steps</span>'+
+      '<div class="w-step"><span class="n">1</span><div><h4>Sign up</h4><p>Business email, company and the modules you want. About a minute.</p></div></div>'+
+      '<div class="w-step"><span class="n">2</span><div><h4>Integrate in Sandbox</h4><p>Your Sandbox keys are waiting in the dashboard the moment you sign up.</p></div></div>'+
+      '<div class="w-step"><span class="n">3</span><div><h4>Go Live!</h4><p>Complete activation and upload documents from the same dashboard.</p></div></div>'+
+    '</div></section>'+
+  '<div class="w-wrap w-trust">Trusted by <b>2000+ Indian businesses</b> for <b>10X faster</b> fintech launches</div>'+
+  '<section class="w-sec soft" id="w-why"><div class="w-wrap"><h2>Why Decentro?</h2><p class="sub">Pick your modules, test them in Sandbox, and launch with our APIs and SDKs in days.</p>'+
+    '<div class="w-grid4"><div class="w-feat"><b>90%</b><span>Reduced Capex &amp; Opex</span></div><div class="w-feat"><b>24x7</b><span>Multi-Channel Support</span></div><div class="w-feat"><b>100%</b><span>Compliance</span></div><div class="w-feat"><b>10X</b><span>Faster Timelines</span></div></div></div></section>'+
+  '<section class="w-sec tint" id="w-launch"><div class="w-wrap"><h2>Accelerate Product Launch</h2><p class="sub">Launch financial products 10X faster with Decentro\'s APIs and SDKs.</p>'+
+    '<div class="w-grid3">'+
+      '<div class="w-launch"><span class="ico">'+I.user+'</span><h3>Sign Up</h3><p>Create an account with your business email and pick the modules you need. No paperwork to start.</p></div>'+
+      '<div class="w-launch"><span class="ico">'+I.key+'</span><h3>Integrate In Sandbox</h3><p>Sandbox keys appear in your dashboard straight away. Explore the docs and integrate from day one.</p></div>'+
+      '<div class="w-launch"><span class="ico">'+I.rocket+'</span><h3>Go Live!</h3><p>When you\'re ready, complete activation from your dashboard. Compliance reviews in 2–5 business days.</p></div>'+
+    '</div><div style="text-align:center;margin-top:32px"><button class="w-btn w-btn-g" data-act="w-signup">Get Started</button></div></div></section>'+
+  '<section class="w-sec" id="w-products"><div class="w-wrap"><h2>Build the Future of Fintech</h2><p class="sub">The simplest fintech infrastructure platform.</p><div class="w-grid3">'+
+    prods.map(p => '<article class="w-prod"><h3>'+p[0]+'</h3><p>'+p[1]+'</p><button data-act="w-signup" data-pre="'+p[2]+'">Try in Sandbox →</button></article>').join('')+
+  '</div></div></section>'+
+  '<section class="w-sec" id="w-cta" style="padding-top:0"><div class="w-wrap"><div class="w-cta"><div><h2>Ready to save time and launch 10X faster?</h2><p>Let us help you! It\'s as simple as it should be.</p></div><button class="w-btn w-btn-w" data-act="w-signup">Get Started</button></div></div></section>'+
+  '</main><footer class="w-foot"><div class="w-wrap">'+wordmark()+'<nav aria-label="Footer"><button data-act="w-login">Log in</button><button data-act="w-signup">Sign up</button><button data-act="w-scroll" data-to="w-products">Products</button></nav><span style="font-size:12px;color:#9AA1A9">© Decentro</span></div></footer></div>';
+}
+function authArt(on){
+  return '<aside class="w-auth-art">'+wordmark()+
+    '<h2>One account. <span>Sandbox today</span>, live when you\'re ready.</h2>'+
+    '<ol><li class="'+(on>=1?'on':'')+'"><span class="n">1</span><div><b>Create your account</b><span>About a minute. No documents yet.</span></div></li>'+
+    '<li><span class="n">2</span><div><b>Integrate in Sandbox</b><span>Keys wait in your dashboard, never in your inbox.</span></div></li>'+
+    '<li><span class="n">3</span><div><b>Go Live!</b><span>Activate and upload documents from the dashboard.</span></div></li></ol>'+
+    '<div class="w-auth-stats"><div><b>2000+</b><span>Customers</span></div><div><b>240M+</b><span>API Transactions</span></div><div><b>$5B+</b><span>Annual GTV</span></div></div></aside>';
+}
+function sErr(k){ return UI.signupErr[k] ? '<span class="w-err" id="e-'+k+'">'+esc(UI.signupErr[k])+'</span>' : ''; }
+function renderSignup(){
+  const d = UI.draft || (UI.draft = { first:'', last:'', cc:'+91', phone:'', email:'', company:'', password:'', products: S.preselect.slice(), terms:false });
+  const chip = id => '<button type="button" class="w-chip" data-act="chip" data-id="'+id+'" aria-pressed="'+(d.products.includes(id))+'">'+(d.products.includes(id)?I.check:'')+esc(PRODUCTS[id].label)+'</button>';
+  const bad = k => UI.signupErr[k] ? ' bad' : '';
+  return '<div class="web"><div class="w-auth">'+authArt(1)+
+  '<main class="w-auth-main"><div class="w-auth-top"><span class="w-mlogo">'+wordmark()+'</span><span class="alt">Already have an account? <button data-act="w-login">Log in</button></span></div>'+
+  '<form class="w-auth-form" id="signup-form" novalidate>'+
+    '<h1 class="w-h">Create your Decentro account</h1><p class="w-hsub">Free Sandbox access. Go live from your dashboard when you\'re ready.</p>'+
+    '<button type="button" class="w-sso" data-act="sso">'+I.google+'Sign up with Google Workspace</button><div class="w-or">or with your business email</div>'+
+    '<div class="w-row2"><div class="w-field"><label for="su-first">First Name <i>*</i></label><input class="w-input'+bad('first')+'" id="su-first" data-d="first" autocomplete="given-name" value="'+esc(d.first)+'">'+sErr('first')+'</div>'+
+    '<div class="w-field"><label for="su-last">Last Name <i>*</i></label><input class="w-input'+bad('last')+'" id="su-last" data-d="last" autocomplete="family-name" value="'+esc(d.last)+'">'+sErr('last')+'</div></div>'+
+    '<div class="w-field"><label for="su-email">Business Email ID <i>*</i></label><input class="w-input'+bad('email')+'" id="su-email" type="email" data-d="email" autocomplete="email" placeholder="you@company.com" value="'+esc(d.email)+'">'+sErr('email')+'</div>'+
+    '<div class="w-row2"><div class="w-field"><label for="su-phone">Phone Number <i>*</i></label><div class="w-phone'+bad('phone')+'"><select id="su-cc" data-d="cc" aria-label="Country code"><option'+(d.cc==='+91'?' selected':'')+'>+91</option><option'+(d.cc==='+971'?' selected':'')+'>+971</option><option'+(d.cc==='+65'?' selected':'')+'>+65</option><option'+(d.cc==='+1'?' selected':'')+'>+1</option></select><input id="su-phone" type="tel" inputmode="numeric" data-d="phone" autocomplete="tel-national" placeholder="98765 43210" value="'+esc(d.phone)+'"></div>'+sErr('phone')+'</div>'+
+    '<div class="w-field"><label for="su-co">Company Name <i>*</i></label><input class="w-input'+bad('company')+'" id="su-co" data-d="company" autocomplete="organization" value="'+esc(d.company)+'">'+sErr('company')+'</div></div>'+
+    '<div class="w-field"><label for="su-pass">Create Password <i>*</i></label><div class="w-pass"><input class="w-input'+bad('password')+'" id="su-pass" type="'+(UI.showPass?'text':'password')+'" data-d="password" autocomplete="new-password" value="'+esc(d.password)+'"><button type="button" data-act="toggle-pass">'+(UI.showPass?'Hide':'Show')+'</button></div>'+(UI.signupErr.password?sErr('password'):'<span class="w-hint">At least 8 characters, with a number.</span>')+'</div>'+
+    '<div class="w-field"><span class="lab" id="prod-l">What do you want to build? <i>*</i></span><div class="w-chips" role="group" aria-labelledby="prod-l">'+Object.keys(PRODUCTS).map(chip).join('')+'</div>'+(UI.signupErr.products?sErr('products'):'<span class="w-hint">Pick any. We enable these in your Sandbox and carry them into activation.</span>')+'</div>'+
+    '<label class="w-check"><input type="checkbox" id="su-terms" data-d="terms"'+(d.terms?' checked':'')+'><span>I agree to Decentro\'s Terms of Service and Privacy Policy.</span></label>'+sErr('terms')+
+    '<button type="submit" class="w-btn w-btn-g w-submit">Create account</button>'+
+    '<button type="button" class="w-btn w-btn-t" data-act="fill-signup" style="align-self:center;font-size:12px;color:var(--w-grey)">Demo: fill sample details</button>'+
+  '</form><div class="w-bar">Prefer email? Reach us at <b>hello@decentro.tech</b></div></main></div></div>';
+}
+function renderLogin(){
+  const l = UI.login || (UI.login = { email: S.user ? S.user.email : '', password:'' });
+  return '<div class="web"><div class="w-auth">'+authArt(0)+
+  '<main class="w-auth-main"><div class="w-auth-top"><span class="w-mlogo">'+wordmark()+'</span><span class="alt">New to Decentro? <button data-act="w-signup">Create an account</button></span></div>'+
+  '<form class="w-auth-form" id="login-form" novalidate style="max-width:440px">'+
+    '<h1 class="w-h">Log in to Decentro</h1><p class="w-hsub">One login for Sandbox and Live.</p>'+
+    '<button type="button" class="w-sso" data-act="sso">'+I.google+'Continue with Google Workspace</button><div class="w-or">or</div>'+
+    '<div class="w-field"><label for="li-email">Business Email ID</label><input class="w-input'+(UI.loginErr?' bad':'')+'" id="li-email" type="email" data-l="email" autocomplete="email" value="'+esc(l.email)+'"></div>'+
+    '<div class="w-field"><div style="display:flex;justify-content:space-between;align-items:baseline"><label for="li-pass">Password</label><button type="button" class="w-btn w-btn-t" style="padding:0;font-size:12px" data-act="forgot">Forgot password?</button></div><div class="w-pass"><input class="w-input'+(UI.loginErr?' bad':'')+'" id="li-pass" type="'+(UI.showPass?'text':'password')+'" data-l="password" autocomplete="current-password" value="'+esc(l.password)+'"><button type="button" data-act="toggle-pass">'+(UI.showPass?'Hide':'Show')+'</button></div></div>'+
+    (UI.loginErr ? '<span class="w-err">'+UI.loginErr+'</span>' : '')+
+    '<button type="submit" class="w-btn w-btn-g w-submit">Log in</button>'+
+    (S.user ? '' : '<div class="w-note">'+I.info+'<span>No account in this demo yet. <button type="button" class="w-btn w-btn-t" style="padding:0;font-size:13px;color:var(--w-blue)" data-act="w-signup">Create one</button> first, then log in with the same email and password.</span></div>')+
+  '</form><div class="w-bar">Prefer email? Reach us at <b>hello@decentro.tech</b></div></main></div></div>';
+}
+
+/* ───────────── DASHBOARD ───────────── */
+function dTop(){
+  const live = S.env === 'live';
+  const liveBtn = approved()
+    ? '<button data-act="env" data-env="live" aria-pressed="'+live+'"><span class="dot" style="background:var(--ok-dot)"></span>Live</button>'
+    : '<button data-act="env" data-env="live" aria-pressed="false">'+(S.kyb.status==='submitted' ? '<span class="dot" style="background:var(--info-dot)"></span>Live · In review' : I.lock+'Live')+'</button>';
+  const strip = live
+    ? '<div class="strip lv"><span><strong>Live</strong> · Real transactions. Changes here move real money.</span></div>'
+    : '<div class="strip sb"><span><strong>Sandbox</strong> · Test data only. No real money moves.</span>'+(approved()?'<button data-act="env" data-env="live">Switch to Live →</button>':(S.kyb.status==='submitted'?'<button data-act="nav" data-page="activate">Activation under review →</button>':'<button data-act="nav" data-page="activate">'+(S.kyb.status==='changes'?'Fix requested change →':'Activate live account →')+'</button>'))+'</div>';
+  return '<header class="d-top"><div class="d-top-row">'+
+    '<button class="d-logo" data-act="nav" data-page="home" aria-label="Dashboard home">'+logo(28)+'</button>'+
+    '<div class="env" role="group" aria-label="Environment"><button data-act="env" data-env="sandbox" aria-pressed="'+(!live)+'"><span class="dot" style="background:var(--warn-dot)"></span>Sandbox</button>'+liveBtn+'</div>'+
+    '<div class="d-search">'+I.search+'Search<kbd>⌘K</kbd></div>'+
+    '<div class="d-tr"><button class="lnk" data-act="w-home-keep">decentro.tech</button><button class="lnk" data-act="docs">API docs</button>'+
+      '<button class="icon-btn" aria-label="Notifications" data-act="notif">'+I.bell+(S.kyb.status==='changes'||approved()?'<span class="pip"></span>':'')+'</button>'+
+      '<button class="av" data-act="menu" aria-haspopup="true" aria-expanded="'+UI.menu+'" aria-label="Account menu">'+initials()+'</button>'+
+      (UI.menu ? '<div class="menu"><div class="who"><b>'+esc(S.user.first+' '+S.user.last)+'</b><span>'+esc(S.user.email)+'</span></div><button data-act="nav" data-page="team">Team</button><button data-act="w-home-keep">Open decentro.tech</button><button data-act="logout">Log out</button></div>' : '')+
+    '</div></div>'+strip+'</header>';
+}
+function navBtn(page, label, icon, badge){
+  return '<button class="nv" data-act="nav" data-page="'+page+'"'+(S.page===page?' aria-current="page"':'')+'>'+(icon||'')+'<span>'+label+'</span>'+(badge||'')+'</button>';
+}
+function dSide(){
+  const prodPages = [];
+  S.products.forEach(p => PRODUCTS[p].pages.forEach(pg => prodPages.push(navBtn('p-'+pg[0], pg[1], pg[2]))));
+  const st = S.kyb.status;
+  const actBadge = approved() ? '<span class="bdg bdg b-ok">Live</span>' : st==='submitted' ? '<span class="bdg b-info">In review</span>' : st==='changes' ? '<span class="bdg b-err">Action</span>' : '<span class="bdg b-blk">'+stepCountDone()+'/8</span>';
+  return '<nav class="d-side" aria-label="Dashboard">'+
+    '<div class="d-grp">'+navBtn('home','Home',I.home)+'</div>'+
+    '<div class="d-grp"><div class="d-grp-l">Products</div>'+prodPages.join('')+'</div>'+
+    '<div class="d-grp"><div class="d-grp-l">Developers</div>'+navBtn('keys','API keys',I.key)+navBtn('webhooks','Webhooks',I.hook)+'</div>'+
+    '<div class="d-grp"><div class="d-grp-l">Account</div>'+navBtn('activate', approved()?'Live activation':'Activate live', I.rocket, actBadge)+navBtn('team','Team',I.team)+'</div>'+
+  '</nav>';
+}
+function renderDash(){
+  let main = '';
+  const p = S.page;
+  if(p === 'home') main = S.env==='live' ? pageLiveHome() : pageHome();
+  else if(p === 'keys') main = pageKeys();
+  else if(p === 'webhooks') main = pageWebhooks();
+  else if(p === 'team') main = pageTeam();
+  else if(p === 'activate') main = pageActivate();
+  else if(p.indexOf('p-') === 0) main = pageProduct(p.slice(2));
+  return '<div class="dash">'+dTop()+'<div class="d-body">'+dSide()+'<main class="d-main" id="d-main">'+main+'</main></div></div>';
+}
+
+function keyRow(label, val, secret, id){
+  const shown = !secret || UI.reveal[id];
+  return '<div class="key"><span class="k">'+label+'</span><code>'+(shown?esc(val):'••••••••••••••••••••••••')+'</code>'+
+    (secret?'<button class="btn btn-o xs" data-act="reveal" data-id="'+id+'">'+(shown?'Hide':'Reveal')+'</button>':'')+
+    '<button class="btn btn-o xs" data-act="copy" data-val="'+esc(val)+'" data-label="'+label+'">Copy</button></div>';
+}
+function goLiveCard(){
+  const st = S.kyb.status;
+  if(st === 'submitted' || st === 'approved' || st === 'changes') return activationStatusCard(true);
+  const n = stepCountDone();
+  const filled = ['Company name','Contact email', S.products.length + ' product' + (S.products.length===1?'':'s')].join(' · ');
+  return '<section class="card"><div class="card-h"><h2>Go live</h2><span class="r bdg '+(n?'b-warn':'b-grey')+'">'+(n?'In progress · '+n+'/8':'Not started')+'</span></div>'+
+    '<div class="card-b" style="display:flex;flex-direction:column;gap:14px">'+
+    '<p style="margin:0;font-size:13px;line-height:1.6;color:var(--d-sub)">Activate your live account to get production keys. 8 steps, about 15 minutes. Your progress saves as you go.</p>'+
+    '<div style="background:var(--d-surf);border:1px solid var(--d-bdr);border-radius:var(--r);padding:12px 14px"><div class="small" style="font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:11px;color:var(--d-sub)">Already filled from sign-up</div><div style="font-size:13px;margin-top:4px">'+filled+'</div></div>'+
+    '<div style="display:flex;flex-direction:column;gap:4px"><div style="font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:11px;color:var(--d-sub)">Keep these handy</div>'+
+      DOCS.filter(d=>d.req(S.products)).map(d=>'<span style="font-size:13px;color:var(--d-dark)">· '+d.l+'</span>').join('')+'</div>'+
+    '<button class="btn btn-p full" data-act="nav" data-page="activate">'+(n?'Continue activation':'Start activation')+I.arrow+'</button>'+
+    '<button class="btn btn-o full sm" data-act="open-agent">Request an agent to help</button></div></section>';
+}
+function activationStatusCard(compact){
+  const st = S.kyb.status;
+  const head = st==='approved' ? ['Live account activated','b-ok','Approved'] : st==='changes' ? ['A change is needed','b-err','Action needed'] : ['Live activation submitted','b-info','Under review'];
+  const steps = [
+    ['Submitted', S.kyb.submittedAt, 'd'],
+    ['Compliance review', st==='approved' ? 'Approved' : st==='changes' ? 'Waiting on you' : 'In progress · usually 2–5 business days', st==='approved' ? 'd' : 'a'],
+    ['Live keys issued', st==='approved' ? 'Ready under API keys' : 'The Live switch unlocks here', st==='approved' ? 'd' : '']
+  ];
+  const tr = '<ol class="trk"'+(compact?' style="grid-template-columns:minmax(0,1fr)"':'')+'>'+steps.map((s,i)=>'<li class="'+s[2]+'"><span class="ic '+(s[2]==='d'?'done':s[2]==='a'?'now':'todo')+'" style="width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700">'+(s[2]==='d'?I.check:(i+1))+'</span><b>'+s[0]+'</b><span>'+s[1]+'</span></li>').join('')+'</ol>';
+  let foot = '';
+  if(st==='changes') foot = '<div class="banner err">'+I.info+'<span><strong>Compliance note:</strong> '+esc(S.kyb.note)+'</span></div><button class="btn btn-p full" data-act="nav" data-page="activate">Fix and resubmit '+I.arrow+'</button>';
+  else if(st==='approved') foot = '<button class="btn btn-p full" data-act="env" data-env="live">Switch to Live '+I.arrow+'</button>';
+  else foot = '<div class="banner info">'+I.clock+'<span>No action needed right now. If compliance needs a correction, it shows up here with the exact item to fix.</span></div>';
+  return '<section class="card"><div class="card-h"><h2>'+head[0]+'</h2><span class="bdg '+head[1]+'">'+head[2]+'</span><span class="r small" style="font-family:var(--f-mono)">'+esc(S.kyb.appId)+'</span></div><div class="card-b" style="display:flex;flex-direction:column;gap:14px">'+tr+foot+'</div></section>';
+}
+function pageHome(){
+  const c = S.checklist;
+  const items = [
+    { k:'acct', done:true, t:'Create your account', d:'Done' },
+    { k:'keys', done:c.keys, t:'Copy your Sandbox API keys', d:'Keys live here, not in your inbox' },
+    { k:'call', done:c.call, t:'Make your first API call', d:'Send a test request with your Sandbox keys' },
+    { k:'webhook', done:c.webhook, t:'Add a webhook URL', d:'Receive test transaction callbacks' },
+    { k:'team', done:c.team, t:'Invite your team', d:'Developers, finance, and the director who will sign' }
+  ];
+  const doneN = items.filter(i=>i.done).length;
+  const nextK = (items.find(i=>!i.done)||{}).k;
+  const body = items.map((it,idx) => {
+    const cls = it.done ? 'done' : (it.k===nextK ? 'now' : 'todo');
+    let more = '', action = '';
+    if(it.k==='keys'){
+      if(it.k===nextK || it.done) more = '<div class="more">'+keyRow('client_id', S.keys.id)+keyRow('client_secret', S.keys.secret, true, 'sbx')+'<span class="small">Rotate keys anytime from Developers › API keys.</span></div>';
+    }
+    if(it.k==='call'){
+      action = '<button class="btn btn-o sm" data-act="test-call">'+(it.done?'Run again':'Send test request')+'</button>';
+      if(UI.testOut) more = '<div class="more"><pre class="code">'+UI.testOut+'</pre></div>';
+    }
+    if(it.k==='webhook') action = it.done ? '<span class="small">'+esc(S.webhook)+'</span>' : '<button class="btn btn-o sm" data-act="nav" data-page="webhooks">Add webhook</button>';
+    if(it.k==='team') action = '<button class="btn btn-o sm" data-act="nav" data-page="team">'+(it.done?'Manage':'Invite')+'</button>';
+    return '<div class="chk'+(it.done?' is-done':'')+'"><span class="ic '+cls+'">'+(it.done?I.check:(idx+1))+'</span><span class="t"><b>'+it.t+'</b>'+(it.done&&it.k!=='acct'?'':'<span>'+it.d+'</span>')+'</span>'+action+(it.k===nextK&&it.k!=='keys'?'<span class="bdg b-info">Up next</span>':'')+more+'</div>';
+  }).join('');
+  return '<div class="ph"><div><h1>Welcome, '+esc(S.user.first)+'</h1><p>'+esc(S.kyb.values.co_name || S.user.company)+' · Sandbox workspace</p></div><button class="btn btn-o sm" data-act="nav" data-page="team">Invite teammates</button></div>'+
+  '<div class="row"><div class="col-main"><section class="card"><div class="card-h"><h2>Get started in Sandbox</h2><span class="r small" style="font-weight:600;color:var(--d-sub)">'+doneN+' of '+items.length+' done</span><span class="prog"><i style="width:'+(doneN/items.length*100)+'%"></i></span></div><div class="card-b tight">'+body+'</div></section></div>'+
+  '<div class="col-side">'+goLiveCard()+
+    '<section class="card"><div class="card-b" style="display:flex;flex-direction:column;gap:12px"><h2 style="margin:0;font-size:14px">Your products</h2><div class="list-mini">'+
+    S.products.map(p=>'<div class="it"><b>'+PRODUCTS[p].label+'</b><span class="bdg '+(approved()?'b-ok':'b-grey')+'">'+(approved()?'Live ready':'Sandbox ready')+'</span></div>').join('')+
+    '</div></div></section></div></div>';
+}
+function pageLiveHome(){
+  return '<div class="ph"><div><h1>Live overview</h1><p>'+esc(S.kyb.values.co_name || S.user.company)+' · Live workspace</p></div><button class="btn btn-o sm" data-act="env" data-env="sandbox">Back to Sandbox</button></div>'+
+  '<div class="banner ok">'+I.check+'<span><strong>You\'re live.</strong> Production keys are active. Sandbox stays available for testing.</span></div>'+
+  '<div class="kpis"><div class="kpi"><span>Collected today</span><b>₹0</b></div><div class="kpi"><span>Transactions</span><b>0</b></div><div class="kpi"><span>Success rate</span><b>—</b></div><div class="kpi"><span>Pending settlement</span><b>₹0</b></div></div>'+
+  '<div class="row"><div class="col-main"><section class="card"><div class="card-h"><h2>Production API keys</h2></div><div class="card-b" style="display:flex;flex-direction:column;gap:8px">'+keyRow('client_id', S.liveKeys.id)+keyRow('client_secret', S.liveKeys.secret, true, 'live')+'<span class="small">Store these in your server\'s secret manager. Never ship them in a mobile or web app.</span></div></section>'+
+  '<section class="card"><div class="card-h"><h2>Recent live transactions</h2></div><div class="empty"><b>No live transactions yet</b>They appear here as soon as your first production request succeeds.</div></section></div>'+
+  '<div class="col-side"><section class="card"><div class="card-b" style="display:flex;flex-direction:column;gap:12px"><h2 style="margin:0;font-size:14px">Live products</h2><div class="list-mini">'+S.products.map(p=>'<div class="it"><b>'+PRODUCTS[p].label+'</b><span class="bdg b-ok">Live</span></div>').join('')+'</div></div></section>'+amCard()+'</div></div>';
+}
+function amCard(){
+  return '<section class="card"><div class="card-b" style="display:flex;flex-direction:column;gap:12px"><h2 style="margin:0;font-size:14px">Your account manager</h2><div style="display:flex;align-items:center;gap:10px;background:var(--d-surf);border:1px solid var(--d-bdr);border-radius:var(--r);padding:10px"><span class="av">AK</span><span><b style="display:block;font-size:13px">Aishwarya K.</b><span class="small">aishwarya@decentro.tech</span></span></div></div></section>';
+}
+function pageKeys(){
+  return '<div class="ph"><div><h1>API keys</h1><p>One set of keys per environment.</p></div></div>'+
+  '<section class="card"><div class="card-h"><h2>Sandbox</h2><span class="bdg b-warn">Test data</span></div><div class="card-b" style="display:flex;flex-direction:column;gap:8px">'+keyRow('client_id', S.keys.id)+keyRow('client_secret', S.keys.secret, true, 'sbx')+'<div><button class="btn btn-o sm" data-act="rotate">Rotate Sandbox secret</button></div></div></section>'+
+  '<section class="card"><div class="card-h"><h2>Live</h2>'+(approved()?'<span class="bdg b-ok">Active</span>':'<span class="bdg b-grey">Locked</span>')+'</div><div class="card-b" style="display:flex;flex-direction:column;gap:10px">'+
+  (approved() ? keyRow('client_id', S.liveKeys.id)+keyRow('client_secret', S.liveKeys.secret, true, 'live')
+    : '<div class="empty" style="padding:20px"><b>Live keys appear after activation</b>'+(S.kyb.status==='submitted'?'Your application is under review.':'Complete activation and compliance review to unlock them.')+'</div>'+(S.kyb.status==='submitted'?'':'<div><button class="btn btn-p sm" data-act="nav" data-page="activate">'+(stepCountDone()?'Continue activation':'Start activation')+'</button></div>'))+
+  '</div></section>';
+}
+function pageWebhooks(){
+  return '<div class="ph"><div><h1>Webhooks</h1><p>We send transaction updates to this URL.</p></div></div>'+
+  '<section class="card"><div class="card-h"><h2>'+(S.env==='live'?'Live':'Sandbox')+' callback URL</h2></div><div class="card-b" style="display:flex;flex-direction:column;gap:10px">'+
+  '<form class="inline-form" id="hook-form"><label class="sr" for="hook-url">Callback URL</label><input class="fi" id="hook-url" type="url" placeholder="https://api.yourcompany.com/decentro/callback" value="'+esc(S.webhook)+'"><button class="btn btn-p" type="submit">'+(S.webhook?'Update':'Save webhook')+'</button></form>'+
+  (UI.hookErr?'<span class="ferr">'+UI.hookErr+'</span>':'<span class="small">Must be HTTPS. We retry failed callbacks with backoff.</span>')+
+  (S.webhook?'<div class="banner ok">'+I.check+'<span>Saved. Test callbacks will go to <strong>'+esc(S.webhook)+'</strong>.</span></div>':'')+'</div></section>';
+}
+function pageTeam(){
+  const rows = [{ n:S.user.first+' '+S.user.last, e:S.user.email, r:'Owner', s:'Active' }].concat(S.invites.map(i=>({ n:'—', e:i.email, r:i.role, s:'Invited' })));
+  return '<div class="ph"><div><h1>Team</h1><p>Everyone shares one account across Sandbox and Live.</p></div></div>'+
+  '<section class="card"><div class="card-h"><h2>Invite a teammate</h2></div><div class="card-b"><form class="inline-form" id="invite-form"><label class="sr" for="inv-email">Email</label><input class="fi" id="inv-email" type="email" placeholder="name@'+esc((S.user.email.split('@')[1])||'company.com')+'"><label class="sr" for="inv-role">Role</label><select class="fi" id="inv-role" style="flex:0 1 180px"><option>Developer</option><option>Finance</option><option>Director / signatory</option><option>Admin</option></select><button class="btn btn-p" type="submit">Send invite</button></form>'+(UI.invErr?'<span class="ferr" style="display:block;margin-top:6px">'+UI.invErr+'</span>':'')+'</div></section>'+
+  '<section class="card"><div class="tbwrap"><table class="tb"><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th></tr></thead><tbody>'+
+  rows.map(r=>'<tr><td>'+esc(r.n)+'</td><td>'+esc(r.e)+'</td><td>'+esc(r.r)+'</td><td><span class="bdg '+(r.s==='Active'?'b-ok':'b-warn')+'">'+r.s+'</span></td></tr>').join('')+'</tbody></table></div></section>';
+}
+function pageProduct(id){
+  const info = PAGE_INFO[id]; const live = S.env==='live';
+  const rows = (S.tests[id]||[]).filter(r => r.env === S.env);
+  return '<div class="ph"><div><h1>'+info.t+'</h1><p>'+info.d+'</p></div><button class="btn btn-p sm" data-act="test-prod" data-id="'+id+'">'+(live?info.action.replace('test ',''):info.action)+'</button></div>'+
+  '<section class="card"><div class="card-h"><h2>Recent '+(live?'live':'Sandbox')+' activity</h2><span class="bdg '+(live?'b-ok':'b-warn')+'">'+(live?'Live':'Sandbox')+'</span></div>'+
+  (rows.length ? '<div class="tbwrap"><table class="tb"><thead><tr><th>Reference</th><th>Type</th><th>Amount</th><th>Status</th><th>Created</th></tr></thead><tbody>'+rows.slice().reverse().map(r=>'<tr><td style="font-family:var(--f-mono);font-size:12px">'+r.ref+'</td><td>'+info.kind+'</td><td>'+r.amt+'</td><td><span class="bdg '+(r.ok?'b-ok':'b-warn')+'">'+(r.ok?'Success':'Pending')+'</span></td><td>'+r.at+'</td></tr>').join('')+'</tbody></table></div>'
+    : '<div class="empty"><b>Nothing here yet</b>'+(live?'Live activity appears after your first production request.':'Create a test request to see how '+info.t+' behaves.')+'</div>')+'</section>';
+}
+
+/* ───────────── Activation ───────────── */
+function val(k){ return S.kyb.values[k] == null ? '' : S.kyb.values[k]; }
+function fieldHTML(k){
+  const f = FIELDS[k]; const v = val(k); const err = UI.errors[k]; const src = S.kyb.src[k];
+  const id = 'f-'+k;
+  let input;
+  if(f.type==='select') input = '<select class="fi'+(err?' bad':'')+'" id="'+id+'" data-k="'+k+'">'+f.opts.map(o=>'<option value="'+esc(o)+'"'+(o===v?' selected':'')+'>'+(o||'Select a range')+'</option>').join('')+'</select>';
+  else if(f.type==='textarea') input = '<textarea class="fi'+(err?' bad':'')+'" id="'+id+'" data-k="'+k+'" placeholder="'+esc(f.eg)+'">'+esc(v)+'</textarea>';
+  else input = '<input class="fi'+(err?' bad':'')+'" id="'+id+'" data-k="'+k+'" type="'+(f.type||'text')+'" placeholder="'+esc(f.eg)+'" value="'+esc(v)+'"'+(err?' aria-invalid="true" aria-describedby="er-'+k+'"':'')+'>';
+  const tt = UI.tt===k ? '<div class="tt" role="dialog" aria-label="'+esc(f.l)+'"><div class="tt-h">'+esc(f.l)+'<button class="btn btn-g xs" data-act="tt-close" aria-label="Close">'+I.x+'</button></div><div class="tt-b">'+f.expl+(f.eg?'<div class="tt-eg"><span class="small" style="display:block;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.07em">Example</span>'+esc(f.eg)+'</div>':'')+'</div><div class="tt-f"><span>More questions?</span><button class="btn btn-p xs" data-act="ask-ai" data-k="'+k+'">'+I.spark+'Ask AI</button></div></div>' : '';
+  return '<div class="fw'+(f.full?' full':'')+'"><div class="fl"><label for="'+id+'">'+esc(f.l)+(f.req?' <i>*</i>':' <em>(optional)</em>')+'</label>'+
+    (src?'<span class="src '+(src==='MCA'?'mca':'su')+'">From '+(src==='MCA'?'MCA':'sign-up')+'</span>':'')+
+    '<button class="info-b" type="button" data-act="tt" data-k="'+k+'" aria-label="About '+esc(f.l)+'">i</button></div>'+input+
+    (err?'<span class="ferr" id="er-'+k+'">'+esc(err)+'</span>':(f.hint?'<span class="fhint">'+f.hint+'</span>':''))+tt+'</div>';
+}
+function railHTML(){
+  const cur = S.kyb.step;
+  const locked = S.kyb.status==='submitted' || approved();
+  const items = STEPS.map(s => {
+    const skip = stepSkipped(s.id);
+    const done = S.kyb.done.includes(s.id) || (locked);
+    const isCur = s.id === cur && !locked;
+    const reachable = !locked && (done || skip || s.id <= Math.max(cur, ...S.kyb.done.concat([0]).map(x=>x+1)));
+    const cls = skip ? 'skip' : done ? 'done' : isCur ? 'act' : 'idle';
+    const sub = skip ? 'Not needed for your services' : done ? (s.id===1 && S.kyb.src.services ? 'Filled from sign-up' : 'Completed') : isCur ? 'In progress' : '';
+    return '<li><button class="rs" data-act="step-go" data-step="'+s.id+'"'+(isCur?' aria-current="step"':'')+(reachable&&!skip?'':' disabled')+'><span class="rd '+cls+'">'+(done&&!skip?'✓':skip?'–':s.id)+'</span><span><span class="rn">'+s.name+'</span>'+(sub?'<span class="rsub'+(done&&!skip?' ok':'')+'">'+sub+'</span>':'')+'</span></button></li>';
+  }).join('');
+  const help = S.agentRequested
+    ? '<div class="banner ok" style="font-size:12px">'+I.check+'<span><strong>Agent help requested.</strong> Aishwarya K. will assign an agent. Their edits come to you for approval.</span></div>'
+    : '<button class="btn btn-p full sm" data-act="open-agent">Request an agent to help fill</button>';
+  return '<aside class="rail"><div class="card"><div class="rail-h"><span>8 steps · ~15 min</span><span>'+stepCountDone()+'/8</span></div><ol>'+items+'</ol></div>'+
+    '<div class="card"><div class="card-b" style="display:flex;flex-direction:column;gap:10px;padding:14px"><span style="font-size:11px;font-weight:700;color:var(--d-sub);text-transform:uppercase;letter-spacing:.07em">Need a hand?</span>'+help+
+    '<button class="btn btn-o full sm" data-act="open-chat">'+I.spark+'Ask AI about any field</button></div></div></aside>';
+}
+function pageActivate(){
+  const st = S.kyb.status;
+  if(st==='submitted' || st==='approved'){
+    return '<div class="ph"><div><h1>'+(st==='approved'?'Live activation':'Activate live account')+'</h1><p>'+esc(S.kyb.appId)+' · submitted '+esc(S.kyb.submittedAt)+'</p></div></div>'+
+    '<div class="act">'+railHTML()+'<div style="display:flex;flex-direction:column;gap:16px;min-width:0">'+activationStatusCard(false)+reviewSummary(true)+'</div></div>';
+  }
+  const n = S.kyb.step; const s = STEPS[n-1];
+  const tip = '<div class="tip"><b>Before you start</b><p>'+TIPS[n]+'</p></div>';
+  let body = '';
+  if(n===1) body = step1();
+  else if(n===7) body = step7();
+  else if(n===8) body = reviewSummary(false);
+  else body = stepFields(n);
+  const isLast = n===8;
+  const nextLabel = isLast ? 'Submit application' : 'Continue';
+  const foot = '<div class="f-foot"><button class="btn btn-o" data-act="step-prev"'+(n===1?' disabled style="visibility:hidden"':'')+'>'+I.back+'Previous</button><div class="r"><button class="btn btn-g" data-act="save-exit">Save &amp; exit</button>'+(n>1&&n<7?'<button class="btn btn-g" data-act="fill-sample">Demo: fill sample</button>':'')+(n===7?'<button class="btn btn-g" data-act="sample-docs">Demo: attach samples</button>':'')+'<button class="btn btn-p" data-act="'+(isLast?'submit-kyb':'step-next')+'">'+nextLabel+(isLast?'':I.arrow)+'</button></div></div>';
+  const banner = st==='changes'
+    ? '<div class="banner err">'+I.info+'<span><strong>Compliance asked for a change:</strong> '+esc(S.kyb.note)+' Fix it below and resubmit.</span></div>'
+    : '<div class="banner info">'+I.info+'<span>Sandbox keeps working while you complete this. Nothing goes live until compliance approves.</span></div>';
+  return '<div class="ph"><div><h1>Activate live account</h1><p>Step '+n+' of 8 · '+s.name+'</p></div><span class="small">Saved automatically</span></div>'+banner+
+  '<div class="act">'+railHTML()+'<div style="display:flex;flex-direction:column;gap:14px;min-width:0">'+tip+
+  '<section class="card"><div class="card-h"><h2>'+s.name+'</h2>'+(n>=2&&n<=5?'<span class="r bdg b-grey">Shared — all entities</span>':'')+(n===6?'<span class="r ents"><span class="etag e-dec">Decentro India</span><span class="etag e-dfin">Decfin India</span></span>':'')+'</div><div class="card-b">'+body+'</div>'+foot+'</section></div></div>';
+}
+function step1(){
+  const sel = svcs();
+  const cards = Object.keys(PRODUCTS).map(id => {
+    const p = PRODUCTS[id]; const on = sel.includes(id);
+    return '<button class="svc" data-act="svc" data-id="'+id+'" aria-pressed="'+on+'"><span class="radio">'+(on?'<span style="color:#fff;display:flex">'+I.check+'</span>':'')+'</span><b>'+p.svc+'</b><span>'+p.desc+'</span><span class="ents">'+p.ents.map(e=>'<span class="etag '+ENT_CLS[e]+'">'+e+'</span>').join('')+'</span></button>';
+  }).join('');
+  const ents = {}; sel.forEach(id => PRODUCTS[id].ents.forEach(e => ents[e]=1));
+  return '<p class="fsub">We pre-selected what you picked at sign-up. This decides which Decentro entities onboard you and which documents you need.</p>'+
+    '<div class="svc-grid">'+cards+'</div>'+(UI.errors.services?'<p class="ferr" style="margin-top:10px">'+UI.errors.services+'</p>':'')+
+    (sel.length?'<div style="margin-top:16px;background:var(--d-surf);border:1px solid var(--d-bdr);border-radius:var(--r);padding:12px 14px;display:flex;flex-wrap:wrap;gap:8px;align-items:center"><span style="font-size:11px;font-weight:700;color:var(--d-sub);text-transform:uppercase;letter-spacing:.07em">Onboarding to</span>'+Object.keys(ents).map(e=>'<span class="etag '+ENT_CLS[e]+'">'+e+'</span>').join('')+(needsPA()?'':'<span class="small" style="flex-basis:100%">Step 6 (payment licence) is skipped for these services.</span>')+'</div>':'');
+}
+function stepFields(n){
+  const mca = n===2 ? '<div class="mca"><label for="f-cin-fetch">Start with your CIN and we\'ll fill the rest from MCA</label><div class="inline-form"><input class="fi" id="f-cin-fetch" data-k="cin" placeholder="U72900KA2018PTC112233" value="'+esc(val('cin'))+'" style="font-family:var(--f-mono);font-size:13px"><button class="btn btn-p" data-act="fetch-mca">Fetch from MCA</button></div>'+(UI.errors.cin && !UI.mcaMsg?'<span class="ferr">'+UI.errors.cin+'</span>':'')+(UI.mcaMsg?'<span class="'+(UI.mcaMsg.ok?'small':'ferr')+'" style="'+(UI.mcaMsg.ok?'color:var(--ok)':'')+'">'+UI.mcaMsg.t+'</span>':'<span class="small">Fills legal name, entity type, incorporation date and registered address.</span>')+'</div>' : '';
+  const keys = STEP_FIELDS[n].filter(k => !(n===2 && k==='cin'));
+  return '<p class="fsub">'+STEP_SUB[n]+'</p>'+mca+'<div class="fgrid">'+keys.map(fieldHTML).join('')+'</div>';
+}
+function step7(){
+  const list = DOCS.filter(d => d.req(svcs()) || d.opt);
+  return '<p class="fsub">'+STEP_SUB[7]+' Based on your services: <strong>'+svcs().map(s=>PRODUCTS[s].label).join(', ')+'</strong>.</p>'+
+  list.map(d => {
+    const f = S.kyb.docs[d.id]; const req = d.req(svcs());
+    const label = '<div class="doc-l"><span>'+d.l+(req?' <i>*</i>':'')+'</span>'+(d.only?'<span class="bdg b-info">'+PRODUCTS[d.only].label+'</span>':'')+(d.opt?'<span class="bdg b-grey">Optional</span>':'')+(d.template?'<button class="btn btn-g xs" data-act="template">Get template</button>':'')+'</div>';
+    const box = f
+      ? '<div class="up"><span class="fic">'+I.file+'</span><span class="fn"><b>'+esc(f.name)+'</b><span>'+f.size+(f.sample?' · sample file':'')+'</span></span><span class="bdg b-ok">Uploaded</span><label class="btn btn-o xs" for="up-'+d.id+'">Replace</label><button class="btn btn-g xs" data-act="rm-doc" data-id="'+d.id+'">Remove</button><input class="sr" type="file" id="up-'+d.id+'" data-doc="'+d.id+'" accept=".pdf,.jpg,.jpeg,.png"></div>'
+      : '<div class="drop'+(d.opt?' opt':'')+(UI.errors['doc_'+d.id]?' bad':'')+'" data-drop="'+d.id+'"><span>'+(UI.errors['doc_'+d.id]?'Required. ':'')+d.hint+'. Drag a file here, or</span><label class="btn btn-o sm" for="up-'+d.id+'">Upload</label><input class="sr" type="file" id="up-'+d.id+'" data-doc="'+d.id+'" accept=".pdf,.jpg,.jpeg,.png"></div>';
+    return '<div class="doc">'+label+box+'</div>';
+  }).join('');
+}
+function reviewSummary(readonly){
+  const sec = (n, rows) => '<div class="rv"><div class="rv-h"><span>'+STEPS[n-1].short+'</span>'+(readonly?'':'<button class="btn btn-o xs" data-act="step-go" data-step="'+n+'">Edit</button>')+'</div><dl>'+rows.map(r=>'<dt>'+esc(r[0])+'</dt><dd'+(r[1]?'':' class="miss"')+'>'+(r[1]?esc(r[1]):'Not provided')+'</dd>').join('')+'</dl></div>';
+  const f = k => [FIELDS[k].l, val(k)];
+  let out = '';
+  out += sec(1, [['Services', svcs().map(s=>PRODUCTS[s].svc).join(', ')]]);
+  [2,3,4,5].forEach(n => out += sec(n, STEP_FIELDS[n].map(f)));
+  if(needsPA()) out += sec(6, STEP_FIELDS[6].map(f));
+  out += sec(7, DOCS.filter(d=>d.req(svcs())||S.kyb.docs[d.id]).map(d=>[d.l, S.kyb.docs[d.id] ? S.kyb.docs[d.id].name : '']));
+  if(readonly) return '<section class="card"><div class="card-h"><h2>Your submission</h2></div><div class="card-b">'+out+'</div></section>';
+  return out + '<label class="w-check" style="font-family:var(--f-dash);margin-top:6px;color:var(--d-sub)"><input type="checkbox" id="declare" data-act="declare"'+(S.kyb.declared?' checked':'')+' style="accent-color:#000"><span>I confirm these details are accurate and I\'m authorised to submit them for '+esc(val('co_name')||S.user.company)+'.</span></label>'+(UI.errors.declare?'<p class="ferr">'+UI.errors.declare+'</p>':'');
+}
+
+/* validation */
+function validateStep(n){
+  const e = {};
+  if(n===1){ if(!svcs().length) e.services = 'Pick at least one service to continue.'; }
+  else if(STEP_FIELDS[n]){
+    STEP_FIELDS[n].forEach(k => {
+      const f = FIELDS[k]; let v = String(val(k)).trim();
+      if(f.req && !v){ e[k] = 'Enter the '+f.l.toLowerCase()+'.'; if(f.type==='select') e[k]='Choose an option.'; return; }
+      if(v && f.v && VALID[f.v]){
+        let t = v; if(f.v==='pan'||f.v==='cin'||f.v==='gstin'||f.v==='ifsc') t = v.toUpperCase().replace(/\s/g,'');
+        if(f.v==='mobile') t = v.replace(/[\s-]/g,'').replace(/^(\+91|91)/,'');
+        if(f.v==='acct') t = v.replace(/\s/g,'');
+        if(f.v==='pct') t = v.replace('%','').trim();
+        if(!VALID[f.v][0].test(t)) e[k] = VALID[f.v][1];
+      }
+    });
+  }
+  else if(n===7){ DOCS.forEach(d => { if(d.req(svcs()) && !S.kyb.docs[d.id]) e['doc_'+d.id] = 1; }); }
+  else if(n===8){ if(!S.kyb.declared) e.declare = 'Tick the declaration to submit.'; }
+  UI.errors = e;
+  return !Object.keys(e).length;
+}
+function nextStepNum(n){ let m = n+1; while(m<=8 && stepSkipped(m)) m++; return m; }
+function prevStepNum(n){ let m = n-1; while(m>=1 && stepSkipped(m)) m--; return Math.max(1,m); }
+
+/* ───────────── Modals ───────────── */
+function modalHTML(){
+  if(!UI.modal) return '';
+  if(UI.modal==='golive'){
+    const st = S.kyb.status; const n = stepCountDone();
+    const rows = [
+      ['Account created','Done · Sandbox active','d'],
+      ['Activation form', n ? n+' of 8 steps done' : '8 steps · about 15 minutes · partly filled from sign-up', st==='submitted'?'d':'a'],
+      ['Compliance review','2–5 business days · we email you at each stage', st==='submitted'?'a':''],
+      ['Live keys','Issued here, under Developers › API keys','']
+    ];
+    return '<div class="ov" data-act="modal-bg"><section class="mod" role="dialog" aria-modal="true" aria-labelledby="m-t"><div class="mod-b"><span class="mod-ic">'+I.lockL+'</span><h2 id="m-t">'+(st==='submitted'?'Live unlocks after review':'Live unlocks after activation')+'</h2><p>'+(st==='submitted'?'Your application is with compliance. The Live switch turns on the moment it\'s approved.':'Complete your business details and documents once. After compliance approves them, the Live switch turns on and production keys appear in this dashboard.')+'</p>'+
+    '<ol class="vsteps">'+rows.map((r,i)=>'<li><span class="ic '+(r[2]==='d'?'done':r[2]==='a'?'now':'todo')+'" style="width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0">'+(r[2]==='d'?I.check:i+1)+'</span><span><b>'+r[0]+'</b><span>'+r[1]+'</span></span></li>').join('')+'</ol></div>'+
+    '<div class="mod-f"><button class="btn btn-o" data-act="modal-close">Stay in Sandbox</button>'+(st==='submitted'?'<button class="btn btn-p" data-act="modal-go" data-page="activate">View application</button>':'<button class="btn btn-p" data-act="modal-go" data-page="activate">'+(n?'Continue activation':'Start activation')+I.arrow+'</button>')+'</div></section></div>';
+  }
+  if(UI.modal==='agent'){
+    return '<div class="ov" data-act="modal-bg"><section class="mod" role="dialog" aria-modal="true" aria-labelledby="m-t"><div class="mod-b"><h2 id="m-t">Request an agent to help fill</h2><p>Your account manager assigns a Decentro agent. Their edits come to you for approval before anything is submitted.</p>'+
+    '<div style="display:flex;align-items:center;gap:10px;background:var(--d-surf);border:1px solid var(--d-bdr);border-radius:var(--r);padding:10px"><span class="av">AK</span><span><b style="display:block;font-size:13px">Aishwarya K.</b><span class="small">Account Manager · aishwarya@decentro.tech</span></span></div>'+
+    '<div class="fw"><div class="fl"><label for="rq-step">Which step do you need help with?</label></div><select class="fi" id="rq-step"><option>General help</option>'+STEPS.map(s=>'<option'+(s.id===S.kyb.step?' selected':'')+'>Step '+s.id+' · '+s.name+'</option>').join('')+'</select></div>'+
+    '<div class="fw"><div class="fl"><label for="rq-note">What do you need? <em>(optional)</em></label></div><textarea class="fi" id="rq-note" placeholder="For example: not sure which documents apply to our entity type."></textarea></div></div>'+
+    '<div class="mod-f"><button class="btn btn-o" data-act="modal-close">Cancel</button><button class="btn btn-p" data-act="agent-send">Send request</button></div></section></div>';
+  }
+  if(UI.modal==='template'){
+    return '<div class="ov" data-act="modal-bg"><section class="mod" role="dialog" aria-modal="true" aria-labelledby="m-t"><div class="mod-b"><h2 id="m-t">Board resolution template</h2><p>Copy this onto company letterhead and have at least two directors sign it.</p><pre class="code" style="white-space:pre-wrap">CERTIFIED TRUE COPY OF THE RESOLUTION PASSED BY THE BOARD OF DIRECTORS OF '+esc((val('co_name')||S.user.company).toUpperCase())+'\n\nRESOLVED THAT the company be onboarded with Decentro for '+esc(svcs().map(s=>PRODUCTS[s].svc).join(', '))+'.\n\nRESOLVED FURTHER THAT '+esc(val('dir_name')||'[DIRECTOR NAME]')+', '+esc(val('dir_desg')||'[DESIGNATION]')+', be authorised to sign all agreements and documents for this purpose.\n\nFor '+esc(val('co_name')||S.user.company)+'\n\n[Director 1 signature]      [Director 2 signature]</pre></div><div class="mod-f"><button class="btn btn-o" data-act="modal-close">Close</button><button class="btn btn-p" data-act="copy-template">Copy text</button></div></section></div>';
+  }
+  return '';
+}
+
+/* ───────────── Chat (Ask AI) ───────────── */
+const AI_KB = {
+  'legal company name':{why:'We verify it against the **MCA registry**. Even a capitalisation mismatch pauses approval.',find:'On your **Certificate of Incorporation**, or at mca.gov.in under *View Company Master Data*.',fmt:'The full registered name with its suffix, e.g. `Private Limited`. Never a brand name.'},
+  'company pan':{why:'Used for **tax and entity verification** and to match your GST and bank records.',find:'On the company PAN card from the Income Tax Department.',fmt:'10 characters, AAAAA0000A. The 4th character is **C** for a company.'},
+  'pan':{why:"The director's PAN is **checked against government records** for identity and AML.",find:"On the director's personal PAN card.",fmt:'10 characters, ABCDE1234F. The 4th character is **P** for an individual.'},
+  'date of birth':{why:'Cross-checked with the PAN record.',find:"As printed on the director's PAN card.",fmt:'DD/MM/YYYY, e.g. `12/04/1984`.'},
+  'din':{why:'Confirms the person is a registered director with **MCA**.',find:"On the MCA portal under the director's profile.",fmt:'8 digits, e.g. `07423811`.'},
+  'mobile number':{why:'Used for **Aadhaar OTP verification**, so it must be the number linked to Aadhaar.',find:"The director's Aadhaar-linked mobile.",fmt:'10 digits starting with 6–9.'},
+  'ownership %':{why:'Owners with 10% or more must be declared under **PMLA**.',find:'Your shareholding register or cap table, including indirect holdings.',fmt:'A percentage, e.g. `51`. If a company owns 40% and you own 60% of it, you hold 24% indirectly.'},
+  'net worth (latest)':{why:'A **Payment Aggregator licence needs net worth of at least ₹15 crore** (RBI).',find:'Your CA-certified balance sheet: assets minus liabilities.',fmt:'An amount in ₹, e.g. `₹ 15,00,00,000`.'},
+  'ifsc':{why:'Routes settlements to the right branch and is checked in the **penny drop**.',find:'On your cheque book or banking app.',fmt:'11 characters, e.g. `HDFC0001234`. The 5th character is 0.'},
+  'gstin':{why:'Ties your tax registration to the entity and speeds up settlement checks.',find:'On your GST registration certificate.',fmt:'15 characters, e.g. `29AACCA1234B1ZK`.'},
+  'cin':{why:'Lets us pull your master data from **MCA** and confirm the company is active.',find:'On your Certificate of Incorporation.',fmt:'21 characters, e.g. `U72900KA2018PTC112233`.'},
+  'how payments flow in your business':{why:'**RBI reviews this for the PA licence.**',find:'You write it yourself in plain English.',fmt:'Who pays you, your role, who you pay out to.'}
+};
+const AI_GENERAL = [
+  {re:/document|upload|paperwork|checklist/, a:'You need a **Certificate of Incorporation**, the **MoA**, and a **board resolution** signed by two directors. Payment collections also needs a **CA-certified net worth certificate**. Clear PDFs, up to 10 MB each.'},
+  {re:/how long|review|timeline|approv|days/, a:'Compliance reviews within **2–5 business days** of submission. You get email updates at every stage, and the Live switch unlocks as soon as you\'re approved.'},
+  {re:/\bubo\b|beneficial|who.*own/, a:'A **UBO** is anyone who owns or controls **10% or more** of the company, directly or indirectly. Declaring them is mandatory under **PMLA**.'},
+  {re:/net worth|crore/, a:'For a **Payment Aggregator licence**, RBI needs **net worth of at least ₹15 crore**, on a CA certificate dated within 3 months.'},
+  {re:/sandbox|keys|test/, a:'Your **Sandbox keys keep working** throughout activation. Live keys are issued separately after approval.'},
+  {re:/save|later|resume/, a:'Everything **saves as you type**. Leave anytime and pick up from the same step.'},
+  {re:/agent|help fill/, a:'Use **Request an agent** in the left panel. An agent can fill fields for you, and you approve their edits before anything is submitted.'}
+];
+function aiReply(q, field, expl){
+  const ql = q.toLowerCase(); const fl = (field||'').toLowerCase();
+  if(!field) for(const g of AI_GENERAL) if(g.re.test(ql)) return g.a;
+  const kb = AI_KB[fl] || {}; const ex = (expl||'').replace(/<[^>]+>/g,''); const f = Object.values(FIELDS).find(x=>x.l===field) || {};
+  const eg = f.eg ? '`'+f.eg+'`' : '';
+  if(/why|need|required|reason|purpose/.test(ql)) return kb.why || ('**'+field+'** helps us verify your business for RBI, MCA and PMLA compliance. '+ex);
+  if(/where|find|get|locate|source/.test(ql)) return kb.find || ('You\'ll usually find **'+field+'** on your incorporation or government documents. '+ex);
+  if(/example|sample|look/.test(ql)) return eg ? 'A valid **'+field+'** looks like '+eg+'.' : ex;
+  if(/format|valid|pattern|length|digit|character/.test(ql)) return kb.fmt || (ex + (eg?' Example: '+eg:''));
+  if(/optional|mandatory|skip|blank|must/.test(ql)) return '**'+field+'** is '+(f.req?'**required**.':'**optional**. Leave it blank if it doesn\'t apply.');
+  for(const g of AI_GENERAL) if(g.re.test(ql)) return g.a;
+  return (ex || 'Here\'s what to enter for **'+field+'**.') + (eg?' Example: '+eg+'.':'') + ' Try asking *why is this needed?* or *where do I find it?*';
+}
+const md = t => esc(t).replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\*(.*?)\*/g,'<em>$1</em>').replace(/`(.*?)`/g,'<code>$1</code>');
+function renderChat(){
+  const el = $('#chat');
+  const show = S.screen==='dash' && S.page==='activate' && !['submitted','approved'].includes(S.kyb.status);
+  el.hidden = !show; if(!show) return;
+  const c = UI.chat;
+  if(!c.open){ el.innerHTML = '<button class="fab" data-act="open-chat">'+I.spark+'Ask AI</button>'; return; }
+  const chips = c.msgs.length <= 1 ? '<div class="qchips">'+(c.field?['Why is this needed?','Where do I find it?','Show an example','What format is valid?']:['What documents do I need?','How long does review take?','What is a UBO?','Do my Sandbox keys still work?']).map(q=>'<button data-act="ai-q" data-q="'+esc(q)+'">'+q+'</button>').join('')+'</div>' : '';
+  el.innerHTML = '<section class="cb" aria-label="Ask AI"><div class="cb-h"><div><b>Ask AI</b><span>'+(c.field?esc(c.field):'Help with activation')+'</span></div><button data-act="close-chat" aria-label="Close">'+I.x+'</button></div>'+
+  '<div class="cb-m" id="cb-m">'+c.msgs.map(m=>'<div class="msg '+(m.r==='u'?'u':'a')+'">'+(m.r==='u'?esc(m.t):md(m.t))+'</div>').join('')+chips+(c.typing?'<div class="msg a">…</div>':'')+'</div>'+
+  '<form class="cb-i" id="cb-form"><label class="sr" for="cb-in">Your question</label><input id="cb-in" placeholder="Ask about this step…" autocomplete="off"><button class="btn btn-p xs" style="height:36px" type="submit">Send</button></form></section>';
+  const m = $('#cb-m'); if(m) m.scrollTop = m.scrollHeight;
+}
+function askAI(q){
+  const c = UI.chat; c.msgs.push({ r:'u', t:q }); c.typing = true; renderChat();
+  setTimeout(()=>{ c.typing=false; c.msgs.push({ r:'a', t:aiReply(q, c.field, c.expl) }); renderChat(); const i=$('#cb-in'); if(i) i.focus(); }, 500 + Math.min(700, q.length*12));
+}
+
+/* ───────────── Demo controls ───────────── */
+function renderDemo(){
+  const el = $('#demo'); el.hidden = false;
+  const st = S.kyb.status;
+  if(!UI.demo){ el.innerHTML = '<button class="demo-btn" data-act="demo">Demo controls</button>'; return; }
+  el.innerHTML = '<div class="demo-pop" role="dialog" aria-label="Demo controls"><div class="st"><strong>Demo only</strong> — stands in for Decentro ops. Application: '+({not_started:'not started',in_progress:'in progress',submitted:'submitted',changes:'changes requested',approved:'approved'}[st]||st)+'.</div>'+
+  '<span class="lbl">Compliance</span><button data-act="demo-approve"'+(st==='submitted'?'':' disabled')+'>Approve the application</button><button data-act="demo-changes"'+(st==='submitted'?'':' disabled')+'>Request a change</button>'+
+  '<span class="lbl">Jump to</span><button data-act="w-home-keep">Website</button><button data-act="w-signup"'+(S.user?' disabled':'')+'>Sign up</button><button data-act="go-dash"'+(S.user?'':' disabled')+'>Dashboard</button>'+
+  '<span class="lbl">Reset</span><button data-act="demo-reset">Start the demo over</button></div><button class="demo-btn" data-act="demo">Close demo controls</button>';
+}
+
+/* ───────────── Render ───────────── */
+let typedTimer;
+function render(keepScroll){
+  const y = window.scrollY;
+  const app = $('#app');
+  let html = '';
+  if(S.screen==='home') html = renderHome();
+  else if(S.screen==='signup') html = renderSignup();
+  else if(S.screen==='login') html = renderLogin();
+  else if(S.screen==='dash' && S.user) html = renderDash();
+  else { S.screen='home'; html = renderHome(); }
+  app.innerHTML = html + modalHTML();
+  renderChat(); renderDemo();
+  if(keepScroll) window.scrollTo(0, y); else window.scrollTo(0, 0);
+  clearInterval(typedTimer);
+  if(S.screen==='home' && !matchMedia('(prefers-reduced-motion: reduce)').matches){
+    const words = ['Payments','KYC','Lending','Payouts','Escrow']; let i=0;
+    typedTimer = setInterval(()=>{ const t=$('#typed'); if(!t) return clearInterval(typedTimer); i=(i+1)%words.length; t.textContent=words[i]; }, 1800);
+  }
+  document.title = S.screen==='dash' ? 'Decentro Dashboard' : 'Decentro Signup Demo';
+  save();
+}
+function go(screen, opts){ S.screen = screen; UI.menu=false; UI.modal=null; UI.errors={}; UI.tt=null; Object.assign(S, opts||{}); render(); }
+function nav(page){ S.page = page; UI.menu=false; UI.errors={}; UI.tt=null; UI.mcaMsg=null; UI.hookErr=null; UI.invErr=null; if(page!=='home') UI.testOut=null; render(); }
+
+/* ───────────── Signup / login logic ───────────── */
+function submitSignup(){
+  const d = UI.draft; const e = {};
+  if(!d.first.trim()) e.first='Enter your first name.';
+  if(!d.last.trim()) e.last='Enter your last name.';
+  if(!VALID.email[0].test(d.email.trim())) e.email='Enter your business email, like you@company.com.';
+  else if(/@(gmail|yahoo|hotmail|outlook|icloud)\./i.test(d.email)) e.email='Use your business email, not a personal one.';
+  const ph = d.phone.replace(/[\s-]/g,'');
+  if(!/^[0-9]{7,12}$/.test(ph) || (d.cc==='+91' && !VALID.mobile[0].test(ph))) e.phone='Enter a valid mobile number.';
+  if(!d.company.trim()) e.company='Enter your company name.';
+  if(d.password.length<8 || !/[0-9]/.test(d.password)) e.password='Use at least 8 characters, including a number.';
+  if(!d.products.length) e.products='Pick at least one product.';
+  if(!d.terms) e.terms='Accept the terms to continue.';
+  UI.signupErr = e;
+  if(Object.keys(e).length){ render(true); const first = document.querySelector('.w-input.bad,.w-phone.bad,#su-terms'); if(first){ first.scrollIntoView({block:'center'}); if(first.focus) first.focus(); } return; }
+  const company = d.company.trim();
+  const f0 = fresh();
+  S.kyb = f0.kyb; S.checklist = f0.checklist; S.tests = {}; S.invites = []; S.webhook = ''; S.agentRequested = false; S.liveKeys = null;
+  S.user = { first:d.first.trim(), last:d.last.trim(), email:d.email.trim().toLowerCase(), cc:d.cc, phone:ph, company:company, password:d.password };
+  S.products = d.products.slice();
+  S.keys = { id: slug(company)+'_sandbox', secret: 'sbx_'+rand(28) };
+  S.session = true; S.env='sandbox'; S.page='home';
+  const v = S.kyb.values;
+  v.services = d.products.slice(); v.co_name = company; v.contact_email = S.user.email; v.dir_name = S.user.first+' '+S.user.last; v.dir_mobile = d.cc==='+91'?ph:'';
+  S.kyb.src = { services:'SU', co_name:'SU', contact_email:'SU', dir_name:'SU' }; if(v.dir_mobile) S.kyb.src.dir_mobile='SU';
+  UI.draft = null; UI.showPass=false;
+  // setup moment
+  const ov = document.createElement('div'); ov.className='setup'; ov.setAttribute('role','status');
+  const rows = ['Creating your account','Generating Sandbox API keys','Enabling '+S.products.map(p=>PRODUCTS[p].label).join(', ')];
+  ov.innerHTML = '<div class="setup-card"><h2>Setting up your Sandbox</h2>'+rows.map((r,i)=>'<div class="setup-row" id="sr'+i+'"><span class="s"></span>'+esc(r)+'</div>').join('')+'</div>';
+  document.body.appendChild(ov);
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches; const step = reduce ? 80 : 480;
+  rows.forEach((_,i)=>{ setTimeout(()=>{ const el=$('#sr'+i); if(el) el.className='setup-row busy'; }, i*step); setTimeout(()=>{ const el=$('#sr'+i); if(el){ el.className='setup-row done'; el.querySelector('.s').innerHTML='<span style="color:#fff;display:flex">'+I.check+'</span>'; } }, i*step+step-60); });
+  setTimeout(()=>{ ov.remove(); go('dash'); toast('Welcome to Decentro. Your Sandbox is ready.'); }, rows.length*step+200);
+}
+function submitLogin(){
+  const l = UI.login;
+  if(!S.user){ UI.loginErr='There\'s no account for this email yet. Create one to continue.'; return render(true); }
+  if(l.email.trim().toLowerCase()!==S.user.email || l.password!==S.user.password){ UI.loginErr='That email and password don\'t match. Check both and try again.'; return render(true); }
+  UI.loginErr=''; UI.login=null; UI.showPass=false; S.session=true; go('dash', { page:'home' });
+  toast('Logged in as '+S.user.email);
+}
+
+/* ───────────── KYB actions ───────────── */
+function setStep(n){ S.kyb.step = n; if(S.kyb.status==='not_started') S.kyb.status='in_progress'; UI.errors={}; UI.tt=null; UI.mcaMsg=null; render(); }
+function stepNext(){
+  const n = S.kyb.step;
+  if(!validateStep(n)){ render(true); const b = document.querySelector('.fi.bad,.drop.bad,.ferr'); if(b) b.scrollIntoView({block:'center'}); toast('Fix the highlighted fields to continue'); return; }
+  if(!S.kyb.done.includes(n)) S.kyb.done.push(n);
+  setStep(nextStepNum(n));
+}
+function submitKyb(){
+  if(!validateStep(8)){ render(true); return; }
+  for(const n of [1,2,3,4,5,6,7]){ if(stepSkipped(n)) continue; if(!validateStep(n)){ S.kyb.step=n; render(); toast('Step '+n+' needs attention before you submit'); return; } }
+  UI.errors={};
+  const re = S.kyb.status==='changes';
+  S.kyb.status='submitted'; S.kyb.submittedAt=today(); if(!S.kyb.appId) S.kyb.appId='KYB-2026-'+rand(4,'0123456789'); S.kyb.note='';
+  if(!S.kyb.done.includes(8)) S.kyb.done.push(8);
+  UI.chat.open=false; S.page='home'; render();
+  toast(re ? 'Resubmitted. Compliance has been notified.' : 'Submitted. Compliance reviews in 2–5 business days.');
+}
+function fetchMCA(){
+  const raw = String(val('cin')).toUpperCase().replace(/\s/g,'');
+  S.kyb.values.cin = raw;
+  if(!VALID.cin[0].test(raw)){ UI.mcaMsg = { ok:false, t:VALID.cin[1] }; return render(true); }
+  const base = (S.user.company||'Company').replace(/\s+(pvt\.?|private)\s*(ltd\.?|limited)?$/i,'');
+  const v = S.kyb.values;
+  v.co_name = base.replace(/\b\w/g,c=>c.toUpperCase()) + (raw[0]==='L' ? ' Limited' : ' Private Limited');
+  v.entity_type = raw[0]==='L' ? 'Public Limited' : 'Private Limited';
+  v.incorp_date = '15/03/'+raw.slice(8,12);
+  v.reg_address = '5th Floor, Prestige Tower, MG Road, Bengaluru 560001';
+  ['co_name','entity_type','incorp_date','reg_address'].forEach(k=>S.kyb.src[k]='MCA');
+  UI.mcaMsg = { ok:true, t:'Filled legal name, entity type, incorporation date and registered address from MCA. Check them below.' };
+  UI.errors={}; render(true);
+}
+function fillSample(){
+  const n = S.kyb.step; const u = S.user;
+  const sample = {
+    2:{ co_name: val('co_name') || u.company+' Private Limited', cin:'U72900KA2018PTC112233', entity_type:'Private Limited', incorp_date:'15/03/2018', reg_address:'5th Floor, Prestige Tower, MG Road, Bengaluru 560001', co_pan:'AACCA1234B', contact_email:u.email, gstin:'29AACCA1234B1ZK', biz_desc:'B2B payments platform for logistics companies. Businesses pay monthly invoices over UPI and NACH; we settle to carriers.' },
+    3:{ dir_name:u.first+' '+u.last, dir_desg:'Managing Director', dir_pan:'ABCPS1234K', dir_dob:'12/04/1984', dir_address:'14, Palm Avenue, Indiranagar, Bengaluru 560038', din:'07423811', dir_mobile: val('dir_mobile') || '9876543210' },
+    4:{ ubo_name:u.first+' '+u.last, ubo_pct:'62', ubo_id:'ABCPS1234K', ubo_nat:'Indian', ubo_address:'14, Palm Avenue, Indiranagar, Bengaluru 560038' },
+    5:{ turnover:'₹ 18,40,00,000', networth:'₹ 16,20,00,000', bank_name:'HDFC Bank', account_no:'50100234567890', ifsc:'HDFC0001234', monthly_vol:'₹1Cr – ₹10Cr / month' },
+    6:{ nw_cert_date:'02/09/2026', ca_firm:'M/s Sharma & Associates', existing_pg:'None', biz_model:'Marketplace: buyers pay us over UPI, we settle to sellers T+1 minus our fee.' }
+  }[n];
+  if(!sample) return;
+  Object.keys(sample).forEach(k => { if(!String(val(k)).trim() || UI.errors[k]) S.kyb.values[k] = sample[k]; });
+  UI.errors={}; render(true); toast('Sample details filled for this step');
+}
+function attachSamples(){
+  const co = (val('co_name')||S.user.company).replace(/[^A-Za-z0-9]+/g,'');
+  DOCS.forEach(d => { if(d.req(svcs()) && !S.kyb.docs[d.id]) S.kyb.docs[d.id] = { name: d.id.toUpperCase()+'_'+co+'.pdf', size: (0.4+Math.random()*1.6).toFixed(1)+' MB', sample:true }; });
+  UI.errors={}; render(true); toast('Sample documents attached');
+}
+function setDoc(id, file){
+  if(!file) return;
+  if(file.size > 10*1024*1024){ toast(file.name+' is over 10 MB. Compress it and try again.'); return; }
+  if(!/\.(pdf|jpe?g|png)$/i.test(file.name)){ toast('Use a PDF, JPG or PNG file.'); return; }
+  const kb = file.size/1024;
+  S.kyb.docs[id] = { name:file.name, size: kb > 1024 ? (kb/1024).toFixed(1)+' MB' : Math.max(1,Math.round(kb))+' KB' };
+  delete UI.errors['doc_'+id]; render(true); toast(file.name+' uploaded');
+}
+
+/* ───────────── Events ───────────── */
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-act]');
+  if(UI.menu && !e.target.closest('.d-tr')){ UI.menu=false; if(!t) return render(true); }
+  if(UI.tt && !e.target.closest('.tt') && !(t && t.dataset.act==='tt')){ UI.tt=null; if(!t) return render(true); }
+  if(!t) return;
+  const a = t.dataset.act; const d = t.dataset;
+  switch(a){
+    case 'w-home': if(S.screen==='dash') return go('home'); return go('home');
+    case 'w-home-keep': UI.demo=false; return go('home');
+    case 'w-signup': UI.demo=false; if(S.user && S.session) return go('dash'); if(d.pre){ S.preselect=[d.pre]; UI.draft=null; } else if(!UI.draft) S.preselect=[]; UI.signupErr={}; return go('signup');
+    case 'w-login': UI.loginErr=''; return go('login');
+    case 'w-scroll': { const el = document.getElementById(d.to); if(el) el.scrollIntoView({behavior:'smooth'}); return; }
+    case 'go-dash': UI.demo=false; if(!S.user) return go('signup'); S.session=true; return go('dash');
+    case 'chip': { const dr=UI.draft; const i=dr.products.indexOf(d.id); if(i>=0) dr.products.splice(i,1); else dr.products.push(d.id); delete UI.signupErr.products; return render(true); }
+    case 'toggle-pass': UI.showPass=!UI.showPass; return render(true);
+    case 'sso': toast('Google Workspace sign-in isn\'t wired up in this demo. Use your business email.'); return;
+    case 'forgot': toast(S.user ? 'In the product, this sends a reset link to '+S.user.email+'.' : 'Create an account first.'); return;
+    case 'fill-signup': UI.draft = Object.assign(UI.draft||{}, { first:'Arun', last:'Sharma', cc:'+91', phone:'9876543210', email:'arun@acmefinserv.com', company:'Acme Finserv', password:'decentro2026', terms:true }); if(!UI.draft.products.length) UI.draft.products=['payments','kyc']; UI.signupErr={}; return render(true);
+    case 'nav': UI.modal=null; return nav(d.page);
+    case 'env': if(d.env==='live' && !approved()){ UI.modal='golive'; return render(true); } S.env=d.env; S.page='home'; UI.menu=false; render(); toast(d.env==='live'?'Switched to Live':'Switched to Sandbox'); return;
+    case 'menu': UI.menu=!UI.menu; return render(true);
+    case 'notif': toast(S.kyb.status==='changes'?'Compliance asked for a change on your application.':approved()?'Your live account is active.':'No new notifications'); return;
+    case 'docs': toast('API docs open in a new tab in the product.'); return;
+    case 'logout': S.session=false; S.env='sandbox'; UI.menu=false; UI.chat.open=false; go('home'); toast('Logged out'); return;
+    case 'reveal': UI.reveal[d.id]=!UI.reveal[d.id]; return render(true);
+    case 'copy': copyText(d.val, d.label); if(d.label==='client_secret' || d.label==='client_id'){ if(!S.checklist.keys){ S.checklist.keys=true; render(true); } } return;
+    case 'rotate': S.keys.secret='sbx_'+rand(28); UI.reveal.sbx=true; render(true); toast('Sandbox secret rotated. Update it in your test environment.'); return;
+    case 'test-call': {
+      const ref = 'DEC'+rand(10,'0123456789ABCDEF');
+      UI.testOut = '<span class="c">$ curl -X POST https://in.staging.decentro.tech/[product-endpoint] \\\n    -H "client_id: '+esc(S.keys.id)+'" -H "client_secret: ••••"</span>\n\n{\n  <span class="s">"status"</span>: <span class="s">"SUCCESS"</span>,\n  <span class="s">"decentroTxnId"</span>: <span class="s">"'+ref+'"</span>,\n  <span class="s">"responseCode"</span>: <span class="n">"S00000"</span>,\n  <span class="s">"message"</span>: <span class="s">"Request processed in Sandbox"</span>\n}';
+      S.checklist.call=true; S.checklist.keys=true; render(true); toast('Test request succeeded'); return;
+    }
+    case 'test-prod': {
+      const id = d.id; S.tests[id] = S.tests[id] || [];
+      const amt = id==='kyc' ? '—' : '₹ '+(Math.floor(Math.random()*90+10)*100).toLocaleString('en-IN');
+      S.tests[id].push({ ref:'DEC'+rand(10,'0123456789ABCDEF'), amt:amt, ok:Math.random()>.25, at:new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'}), env:S.env });
+      if(S.env==='sandbox'){ S.checklist.call=true; S.checklist.keys=true; }
+      render(true); toast(S.env==='live'?'Created in Live':'Test request created'); return;
+    }
+    case 'open-agent': UI.modal='agent'; return render(true);
+    case 'agent-send': S.agentRequested=true; UI.modal=null; render(true); toast('Request sent. Your account manager will assign an agent.'); return;
+    case 'template': UI.modal='template'; return render(true);
+    case 'copy-template': { const pre = document.querySelector('.mod pre'); copyText(pre ? pre.textContent : '', 'Template'); return; }
+    case 'modal-close': UI.modal=null; return render(true);
+    case 'modal-bg': if(e.target===t){ UI.modal=null; render(true); } return;
+    case 'modal-go': UI.modal=null; return nav(d.page);
+    case 'svc': { const v = S.kyb.values; v.services = v.services||[]; const i=v.services.indexOf(d.id); if(i>=0) v.services.splice(i,1); else v.services.push(d.id); delete S.kyb.src.services; delete UI.errors.services; S.products = Array.from(new Set(S.products.concat(v.services))); return render(true); }
+    case 'step-go': { const n=+d.step; if(stepSkipped(n)) return; return setStep(n); }
+    case 'step-next': return stepNext();
+    case 'step-prev': return setStep(prevStepNum(S.kyb.step));
+    case 'save-exit': nav('home'); toast('Progress saved. Continue anytime from Home.'); return;
+    case 'fill-sample': return fillSample();
+    case 'sample-docs': return attachSamples();
+    case 'fetch-mca': return fetchMCA();
+    case 'rm-doc': delete S.kyb.docs[d.id]; return render(true);
+    case 'declare': S.kyb.declared = t.checked; delete UI.errors.declare; save(); return;
+    case 'submit-kyb': return submitKyb();
+    case 'tt': UI.tt = UI.tt===d.k ? null : d.k; return render(true);
+    case 'tt-close': UI.tt=null; return render(true);
+    case 'ask-ai': { const f = FIELDS[d.k]; UI.tt=null; UI.chat = { open:true, field:f.l, expl:f.expl, msgs:[{ r:'a', t:'I can help with **'+f.l+'**. Ask anything, or pick a question.' }] }; render(true); const i=$('#cb-in'); if(i) i.focus(); return; }
+    case 'open-chat': UI.chat = { open:true, field:'', expl:'', msgs:[{ r:'a', t:'Hi '+(S.user?S.user.first:'')+'. Ask about any field, document or step, or pick a question below.' }] }; renderChat(); { const i=$('#cb-in'); if(i) i.focus(); } return;
+    case 'close-chat': UI.chat.open=false; return renderChat();
+    case 'ai-q': return askAI(d.q);
+    case 'demo': UI.demo=!UI.demo; return renderDemo();
+    case 'demo-approve': S.kyb.status='approved'; S.liveKeys={ id: slug(S.user.company)+'_live', secret:'live_'+rand(32) }; UI.demo=false; render(true); toast('Approved. The Live switch is now unlocked.'); return;
+    case 'demo-changes': S.kyb.status='changes'; S.kyb.note='The board resolution must be signed by at least two directors. Upload a signed copy.'; delete S.kyb.docs.board_res; S.kyb.done = S.kyb.done.filter(x=>x!==7 && x!==8); S.kyb.step=7; UI.demo=false; render(true); toast('Compliance requested a change'); return;
+    case 'demo-reset': try{ localStorage.removeItem(KEY); }catch(err){} S = fresh(); Object.assign(UI, { errors:{}, tt:null, menu:false, modal:null, demo:false, reveal:{}, chat:{ open:false, field:'', expl:'', msgs:[] }, signupErr:{}, loginErr:'', draft:null, login:null, testOut:null }); render(); toast('Demo reset'); return;
+  }
+});
+document.addEventListener('input', e => {
+  const t = e.target;
+  if(t.dataset.d && UI.draft){ UI.draft[t.dataset.d] = t.type==='checkbox' ? t.checked : t.value; if(UI.signupErr[t.dataset.d]){ t.classList.remove('bad'); } return; }
+  if(t.dataset.l && UI.login){ UI.login[t.dataset.l] = t.value; return; }
+  if(t.dataset.k){ S.kyb.values[t.dataset.k] = t.value; if(S.kyb.src[t.dataset.k]==='SU' || S.kyb.src[t.dataset.k]==='MCA'){ /* keep source chip until changed */ } if(UI.errors[t.dataset.k]){ t.classList.remove('bad'); } if(S.kyb.status==='not_started') S.kyb.status='in_progress'; save(); }
+});
+document.addEventListener('change', e => {
+  const t = e.target;
+  if(t.dataset.d && UI.draft){ UI.draft[t.dataset.d] = t.type==='checkbox' ? t.checked : t.value; return; }
+  if(t.dataset.k){ S.kyb.values[t.dataset.k] = t.value; save(); return; }
+  if(t.dataset.doc && t.files && t.files[0]) setDoc(t.dataset.doc, t.files[0]);
+});
+document.addEventListener('submit', e => {
+  e.preventDefault();
+  const id = e.target.id;
+  if(id==='signup-form') return submitSignup();
+  if(id==='login-form') return submitLogin();
+  if(id==='cb-form'){ const i=$('#cb-in'); const q=i.value.trim(); if(q) askAI(q); return; }
+  if(id==='hook-form'){ const v = $('#hook-url').value.trim(); if(!/^https:\/\/[^\s.]+\.[^\s]+/.test(v)){ UI.hookErr='Enter an HTTPS URL, like https://api.yourcompany.com/callback.'; return render(true); } UI.hookErr=null; S.webhook=v; S.checklist.webhook=true; render(true); toast('Webhook saved'); return; }
+  if(id==='invite-form'){ const v=$('#inv-email').value.trim(); if(!VALID.email[0].test(v)){ UI.invErr='Enter a valid email address.'; return render(true); } UI.invErr=null; S.invites.push({ email:v, role:$('#inv-role').value }); S.checklist.team=true; render(true); toast('Invite sent to '+v); return; }
+});
+['dragover','dragleave','drop'].forEach(ev => document.addEventListener(ev, e => {
+  const z = e.target.closest && e.target.closest('[data-drop]'); if(!z) return;
+  e.preventDefault();
+  if(ev==='dragover') z.classList.add('drag');
+  else if(ev==='dragleave') z.classList.remove('drag');
+  else { z.classList.remove('drag'); if(e.dataTransfer.files[0]) setDoc(z.dataset.drop, e.dataTransfer.files[0]); }
+}));
+document.addEventListener('keydown', e => { if(e.key==='Escape'){ if(UI.modal){ UI.modal=null; render(true); } else if(UI.tt){ UI.tt=null; render(true); } else if(UI.menu){ UI.menu=false; render(true); } } });
+
+if(S.screen==='dash' && (!S.user || !S.session)) S.screen='home';
+render();
+})();
+</script>
+
+</body></html>
